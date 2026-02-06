@@ -32,8 +32,8 @@ public class Vehiculo {
         return modelo;
     }
 
-    public String getFechaLlegada() {
-        return fechaLlegada.toString();
+    public LocalDate getFechaLlegada() {
+        return fechaLlegada;
     }
 
     public String getAveria() {
