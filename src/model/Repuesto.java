@@ -10,13 +10,15 @@ public class Repuesto {
     private LocalDate fechaPedido;
     private float precio;
     private boolean recibido;
+    private int garantiaMeses;
 
-    public Repuesto(String referencia, String modelo, LocalDate fechaPedido, float precio, boolean recibido){
+    public Repuesto(String referencia, String modelo, LocalDate fechaPedido, float precio, boolean recibido, int garantiaMeses){
         this.referencia = referencia;
         this.modelo = modelo;
         this.fechaPedido = fechaPedido;
         this.precio = precio;
         this.recibido = recibido;
+        this .garantiaMeses = garantiaMeses;
     }
 
     //GETTERS
@@ -40,6 +42,11 @@ public class Repuesto {
         return recibido;
     }
 
+    public int getGarantiaMeses() {
+        return garantiaMeses;
+    }
+
+
     //SETTERS
 
     public void setReferencia(String referencia) {
@@ -60,5 +67,8 @@ public class Repuesto {
 
     public void setRecibido(boolean recibido) {
         this.recibido = recibido;
+    }
+    public void setGarantiaMeses(int garantiaMeses) {
+        this.garantiaMeses = garantiaMeses;
     }
 }
