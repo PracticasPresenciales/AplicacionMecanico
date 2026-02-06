@@ -13,17 +13,26 @@ import model.Cliente;
 import model.Vehiculo;
 import model.Repuesto;
 
+import java.io.PrintWriter;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainApp extends Application {
 
-    // ====== LISTAS EN MEMORIA ======
+    // LISTAS EN MEMORIA
     private List<Usuario> usuarios = new ArrayList<>();
     private List<Cliente> clientes = new ArrayList<>();
     private List<Vehiculo> vehiculos = new ArrayList<>();
     private List<Repuesto> repuestos = new ArrayList<>();
+
+
+    // FICHEROS
+    private static final String FICHERO_USUARIOS = "usuarios.txt";
+    private static final String FICHERO_CLIENTES = "clientes.txt";
+    private static final String FICHERO_VEHICULOS = "vehiculos.txt";
+    private static final String FICHERO_REPUESTOS = "repuestos.txt";
+
 
     private GridPane grid = new GridPane();
 
@@ -57,7 +66,7 @@ public class MainApp extends Application {
         stage.show();
     }
 
-    // ====== CARGA FORMULARIO SEGÚN ENTIDAD ======
+    // CARGA FORMULARIO SEGÚN ENTIDAD
     private void cargarFormulario(String entidad) {
         grid.getChildren().clear();
 
@@ -69,7 +78,7 @@ public class MainApp extends Application {
         }
     }
 
-    // ====== FORMULARIO USUARIOS ======
+    // FORMULARIO USUARIOS
         private void formularioUsuarios() {
 
             Label lblNombre = new Label("Nombre");
@@ -96,15 +105,21 @@ public class MainApp extends Application {
             btnGuardar.setMinWidth(100);
 
             btnGuardar.setOnAction(e -> {
-                usuarios.add(new Usuario(
+
+                Usuario u = new Usuario(
                         txtNombre.getText(),
                         txtContraseña.getText(),
                         txtPuesto.getText(),
                         dpFechaAlta.getValue(),
                         txtObservaciones.getText()
-                ));
+                );
+
+                usuarios.add(u);      //
+                guardarUsuarios();    //
+
                 limpiarFormulario();
             });
+
 
             grid.add(lblNombre, 0, 0);
             grid.add(txtNombre, 1, 0);
@@ -124,8 +139,25 @@ public class MainApp extends Application {
             grid.add(btnGuardar, 1, 5);
         }
 
+        // GUARDAR USUARIOS
 
-        // ====== FORMULARIO CLIENTES (BÁSICO) ======
+    private void guardarUsuarios() {
+        try (PrintWriter pw = new PrintWriter(FICHERO_USUARIOS)) {
+            for (Usuario u : usuarios) {
+                pw.println(
+                        u.getNombre() + ";" +
+                                u.getContraseña() + ";" +
+                                u.getPuesto() + ";" +
+                                u.getFechaAlta() + ";" +
+                                u.getObservaciones()
+                );
+            }
+        } catch (Exception ignored) {}
+    }
+
+
+
+    // FORMULARIO CLIENTES
         private void formularioClientes() {
 
             Label lblNombre = new Label("Nombre");
@@ -146,7 +178,6 @@ public class MainApp extends Application {
             DatePicker dpUltimaVisita = new DatePicker();
             CheckBox chkTipo = new CheckBox("Tipo");
 
-            // 🔹 MISMO ANCHO QUE USUARIO Y VEHÍCULO
             txtNombre.setPrefWidth(250);
             txtApellidos.setPrefWidth(250);
             txtDni.setPrefWidth(250);
@@ -165,6 +196,8 @@ public class MainApp extends Application {
                         chkTipo.isSelected()
                 );
                 clientes.add(c);
+                guardarClientes();
+
                 limpiarFormulario();
             });
 
@@ -186,9 +219,24 @@ public class MainApp extends Application {
             grid.add(btnGuardar, 1, 5);
         }
 
+        // GUARDAR DATOS CLIENTES
+        private void guardarClientes() {
+            try (PrintWriter pw = new PrintWriter(FICHERO_CLIENTES)) {
+                for (Cliente c : clientes) {
+                    pw.println(
+                            c.getId() + ";" +
+                                    c.getNombre() + ";" +
+                                    c.getApellidos() + ";" +
+                                    c.getDni() + ";" +
+                                    c.getFechaUltimaVisita() + ";" +
+                                    c.isTipo()
+                    );
+                }
+            } catch (Exception ignored) {}
+        }
 
 
-    // ====== FORMULARIO VEHÍCULOS ======
+    // FORMULARIO VEHÍCULOS
     private void formularioVehiculos() {
 
         Label lblModelo = new Label("Modelo");
@@ -223,6 +271,8 @@ public class MainApp extends Application {
                     txtAveria.getText()             // averia
             );
             vehiculos.add(v);
+            guardarVehiculos();
+
             limpiarFormulario();
         });
 
@@ -245,7 +295,23 @@ public class MainApp extends Application {
     }
 
 
-    // ====== FORMULARIO REPUESTOS ======
+    // GUARDAR VEHICULOS
+    private void guardarVehiculos() {
+        try (PrintWriter pw = new PrintWriter(FICHERO_VEHICULOS)) {
+            for (Vehiculo v : vehiculos) {
+                pw.println(
+                        v.getModelo() + ";" +
+                                v.getMatricula() + ";" +
+                                v.getTelefonoDueno() + ";" +
+                                v.getFechaLlegada() + ";" +
+                                v.getAveria()
+                );
+            }
+        } catch (Exception ignored) {}
+    }
+
+
+    // FORMULARIO REPUESTOS
     private void formularioRepuestos() {
 
         Label lblReferencia = new Label("Referencia");
@@ -289,6 +355,8 @@ public class MainApp extends Application {
                     Integer.parseInt(txtGarantia.getText())// garantiaMeses
             );
             repuestos.add(r);
+            guardarRepuestos();
+
             limpiarFormulario();
         });
 
@@ -313,8 +381,24 @@ public class MainApp extends Application {
         grid.add(btnGuardar, 1, 6);
     }
 
+    // GUARDAR REPUESTOS
+    private void guardarRepuestos() {
+        try (PrintWriter pw = new PrintWriter(FICHERO_REPUESTOS)) {
+            for (Repuesto r : repuestos) {
+                pw.println(
+                        r.getReferencia() + ";" +
+                                r.getModelo() + ";" +
+                                r.getFechaPedido() + ";" +
+                                r.getPrecio() + ";" +
+                                r.isRecibido() + ";" +
+                                r.getGarantiaMeses()
+                );
+            }
+        } catch (Exception ignored) {}
+    }
 
-    // ====== LIMPIAR FORMULARIO ======
+
+    // LIMPIAR FORMULARIO
     private void limpiarFormulario() {
         grid.getChildren().forEach(n -> {
             if (n instanceof TextField) ((TextField) n).clear();
