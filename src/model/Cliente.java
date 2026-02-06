@@ -48,26 +48,32 @@ public class Cliente {
 
     // SETTERS
     public void setId(int id) {
+
         this.id = id;
     }
 
     public void setNombre(String nombre) {
+
         this.nombre = nombre;
     }
 
     public void setApellidos(String apellidos) {
+
         this.apellidos = apellidos;
     }
 
     public void setDni(String dni) {
+
         this.dni = dni;
     }
 
     public void setFechaUltimaVisita(LocalDate fechaUltimaVisita) {
+
         this.fechaUltimaVisita = fechaUltimaVisita;
     }
 
     public void setTipo(boolean tipo) {
+
         this.tipo = tipo;
     }
 }
