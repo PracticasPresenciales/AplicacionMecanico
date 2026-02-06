@@ -53,7 +53,7 @@ public class Vehiculo {
         this.fechaLlegada = fechaLlegada;
     }
 
-    public void setaAveria(String averia){
+    public void setAveria(String averia){
         this.averia = averia;
     }
 
