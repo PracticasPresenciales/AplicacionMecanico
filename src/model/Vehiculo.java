@@ -1,4 +1,3 @@
-package model;
 
 import java.time.LocalDate;
 
@@ -10,13 +9,13 @@ public class Vehiculo {
     private LocalDate fechaLlegada;
     private String averia;
 
-    public Vehiculo(String modelo, String matricula, String telefonoDueno, LocalDate fechaLlegada, String averia)
-    this.modelo =modelo;
-    this.matricula =matricula;
-    this.telefonoDueno
-    this.fechaLlegada =fechaLlegada;
-    this.averia =averia;
-}
+    public Vehiculo(String modelo, String matricula, String telefonoDueno, LocalDate fechaLlegada, String averia) {
+      this.modelo =modelo;
+      this.matricula =matricula;
+      this.telefonoDueno
+      this.fechaLlegada =fechaLlegada;
+      this.averia =averia;
+  }
 
     //GETTERS
     {
@@ -58,7 +57,3 @@ public class Vehiculo {
     }
 
     }
-
-
-
-
