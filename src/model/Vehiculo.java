@@ -20,24 +20,24 @@ public class Vehiculo {
 
     //GETTERS
     {
-        public String getmodelo() {
+        public String getModelo() {
             return modelo;
     }
-        public String getmatricula() {
+        public String getMatricula() {
         return modelo;
     }
-        public String getelefonoDueno() {
+        public String getTelefonoDueno() {
         return modelo;
     }
-        public String getfechaLlegada() {
+        public String getFechaLlegada() {
         return modelo;
     }
-        public String getaveria() {
+        public String getAveria() {
         return modelo;
     }
 
     // SETTERS
-    public void setmodelo(String modelo){
+    public void setModelo(String modelo){
             this.modelo = modelo;
     }
 
@@ -45,7 +45,7 @@ public class Vehiculo {
         this.matricula = matricula;
     }
 
-    public void settelefonoDueno(String telefonoDueno){
+    public void setTelefonoDueno(String telefonoDueno){
         this.telefonoDueno = telefonoDueno;
     }
 
@@ -53,7 +53,7 @@ public class Vehiculo {
         this.fechaLlegada = fechaLlegada;
     }
 
-    public void setaveria(String averia){
+    public void setaAveria(String averia){
         this.averia = averia;
     }
 
