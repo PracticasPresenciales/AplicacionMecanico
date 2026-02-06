@@ -9,7 +9,7 @@ public class Cliente {
     private String apellidos;
     private String dni;
     private LocalDate fechaUltimaVisita;
-    private boolean tipo;
+    private boolean tipo;  //Empresa o no
 
     public Cliente(int id, String nombre, String apellidos, String dni, LocalDate fechaUltimaVisita, boolean tipo) {
         this.id = id;
