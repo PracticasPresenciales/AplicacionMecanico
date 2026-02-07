@@ -13,12 +13,16 @@ import model.Cliente;
 import model.Vehiculo;
 import model.Repuesto;
 
+import java.io.*;
+
+
 import java.io.PrintWriter;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainApp extends Application {
+
 
     // LISTAS EN MEMORIA
     private List<Usuario> usuarios = new ArrayList<>();
@@ -36,8 +40,96 @@ public class MainApp extends Application {
 
     private GridPane grid = new GridPane();
 
+    // SESIÓN
+    private Usuario usuarioEnSesion = null;
+
     @Override
     public void start(Stage stage) {
+
+        //Leer Usuarios
+        cargarUsuarios();
+
+        // Admin/1234
+        if (!existeUsuario("Admin")) {
+            usuarios.add(new Usuario("Admin", "1234", "", LocalDate.now(), ""));
+            guardarUsuarios();
+        }
+
+        // Mostrar login primero
+        mostrarLogin(stage);
+
+        // UI tras el login
+    }
+
+    private void mostrarLogin(Stage stage) {
+
+        Label titulo = new Label("Login");
+        titulo.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
+
+        TextField txtUsuario = new TextField();
+
+        PasswordField txtPassword = new PasswordField();
+
+        Label lblError = new Label();
+        lblError.setStyle("-fx-text-fill: red;");
+
+        Button btnEntrar = new Button("Entrar");
+        btnEntrar.setDefaultButton(true);
+
+        btnEntrar.setOnAction(e -> {
+            String user = (txtUsuario.getText() == null) ? "" : txtUsuario.getText().trim();
+            String pass = (txtPassword.getText() == null) ? "" : txtPassword.getText();
+
+            Usuario u = loginCorrecto(user, pass);
+            if (u != null) {
+                usuarioEnSesion = u;
+                mostrarUIOriginal(stage);
+            } else {
+                lblError.setText("Usuario o contraseña incorrectos");
+            }
+        });
+
+        txtPassword.setOnAction(e -> btnEntrar.fire());
+
+        GridPane gridLogin = new GridPane();
+        gridLogin.setPadding(new Insets(12));
+        gridLogin.setHgap(10);
+        gridLogin.setVgap(10);
+
+        gridLogin.add(titulo, 0, 0, 2, 1);
+        gridLogin.add(new Label("User"), 0, 1);
+        gridLogin.add(txtUsuario, 1, 1);
+        gridLogin.add(new Label("Password"), 0, 2);
+        gridLogin.add(txtPassword, 1, 2);
+        gridLogin.add(btnEntrar, 1, 3);
+        gridLogin.add(lblError, 1, 4);
+
+        stage.setScene(new Scene(gridLogin, 360, 220));
+        stage.setTitle("Login - Gestión Taller");
+        stage.setResizable(false);
+        stage.show();
+    }
+
+    private Usuario loginCorrecto(String user, String pass) {
+        for (Usuario u : usuarios) {
+            if (u.getNombre() != null && u.getContraseña() != null
+                    && u.getNombre().equalsIgnoreCase(user)
+                    && u.getContraseña().equals(pass)) {
+                return u;
+            }
+        }
+        return null;
+    }
+
+    private boolean existeUsuario(String nombre) {
+        for (Usuario u : usuarios) {
+            if (u.getNombre() != null && u.getNombre().equalsIgnoreCase(nombre)) return true;
+        }
+        return false;
+    }
+
+    //UI
+    private void mostrarUIOriginal(Stage stage) {
 
         ComboBox<String> comboEntidad = new ComboBox<>();
         comboEntidad.getItems().addAll(
@@ -65,6 +157,107 @@ public class MainApp extends Application {
         stage.setTitle("Gestión Taller");
         stage.show();
     }
+
+    private void mostrarRegistroUsuario() {
+
+        Dialog<Void> dialog = new Dialog<>();
+        dialog.setTitle("Registrar usuario");
+
+        ButtonType btnRegistrar = new ButtonType("Registrar", ButtonBar.ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().addAll(btnRegistrar, ButtonType.CANCEL);
+
+        TextField txtUsuario = new TextField();
+        txtUsuario.setPromptText("Usuario");
+
+        PasswordField txtPass1 = new PasswordField();
+        txtPass1.setPromptText("Contraseña");
+
+        PasswordField txtPass2 = new PasswordField();
+        txtPass2.setPromptText("Repite la contraseña");
+
+        Label lblError = new Label();
+        lblError.setStyle("-fx-text-fill: red;");
+
+        GridPane g = new GridPane();
+        g.setPadding(new Insets(12));
+        g.setHgap(10);
+        g.setVgap(10);
+
+        g.add(new Label("Usuario"), 0, 0);
+        g.add(txtUsuario, 1, 0);
+        g.add(new Label("Contraseña"), 0, 1);
+        g.add(txtPass1, 1, 1);
+        g.add(new Label("Confirmar"), 0, 2);
+        g.add(txtPass2, 1, 2);
+        g.add(lblError, 1, 3);
+
+        dialog.getDialogPane().setContent(g);
+
+        dialog.getDialogPane().lookupButton(btnRegistrar).addEventFilter(javafx.event.ActionEvent.ACTION, ev -> {
+            String user = (txtUsuario.getText() == null) ? "" : txtUsuario.getText().trim();
+            String p1 = (txtPass1.getText() == null) ? "" : txtPass1.getText();
+            String p2 = (txtPass2.getText() == null) ? "" : txtPass2.getText();
+
+            if (user.isEmpty() || p1.isEmpty() || p2.isEmpty()) {
+                lblError.setText("Rellena todos los campos");
+                ev.consume();
+                return;
+            }
+            if (!p1.equals(p2)) {
+                lblError.setText("Las contraseñas no coinciden");
+                ev.consume();
+                return;
+            }
+            if (existeUsuario(user)) {
+                lblError.setText("Ese usuario ya existe");
+                ev.consume();
+                return;
+            }
+
+            // Constructor 5 parámetros
+            usuarios.add(new Usuario(user, p1, "", LocalDate.now(), ""));
+            guardarUsuarios();
+
+            Alert a = new Alert(Alert.AlertType.INFORMATION);
+            a.setTitle("OK");
+            a.setHeaderText(null);
+            a.setContentText("Usuario registrado correctamente");
+            a.showAndWait();
+        });
+
+        dialog.showAndWait();
+    }
+
+    // Cargar Usuarios desde usuaris.txt
+    private void cargarUsuarios() {
+        usuarios.clear();
+
+        File f = new File(FICHERO_USUARIOS);
+        if (!f.exists()) return;
+
+        try (BufferedReader br = new BufferedReader(new FileReader(f))) {
+            String l;
+            while ((l = br.readLine()) != null) {
+                String[] p = l.split(";", -1);
+                if (p.length < 2) continue;
+
+                String nombre = p[0];
+                String pass = p[1];
+                String puesto = (p.length > 2) ? p[2] : "";
+                LocalDate fecha = LocalDate.now();
+
+                if (p.length > 3 && p[3] != null && !p[3].isBlank() && !"null".equalsIgnoreCase(p[3])) {
+                    try { fecha = LocalDate.parse(p[3]); } catch (Exception ignored) {}
+                }
+                String obs = (p.length > 4) ? p[4] : "";
+
+                if (nombre != null && !nombre.isBlank() && pass != null && !pass.isBlank()) {
+                    usuarios.add(new Usuario(nombre, pass, puesto, fecha, obs));
+                }
+            }
+        } catch (Exception ignored) {}
+    }
+
 
     // CARGA FORMULARIO SEGÚN ENTIDAD
     private void cargarFormulario(String entidad) {
