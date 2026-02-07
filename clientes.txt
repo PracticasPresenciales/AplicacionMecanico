@@ -1,1 +1,2 @@
 0;trdr;;ghfmd;2026-01-30;false
+0;Lola;Mara;78989897J;2026-02-12;true
