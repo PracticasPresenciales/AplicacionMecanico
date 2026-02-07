@@ -23,3 +23,7 @@
 hs_err_pid*
 replay_pid*
 .idea/
+usuarios.txt
+vehiculos.txt
+repuestos.txt
+clientes.txt
