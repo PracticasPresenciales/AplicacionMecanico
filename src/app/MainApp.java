@@ -114,6 +114,21 @@ public class MainApp extends Application {
 
             btnGuardar.setOnAction(e -> {
 
+                if (txtNombre.getText().isBlank()) {
+                    mostrarError("Error", "El nombre es obligatorio");
+                    return;
+                }
+
+                if (txtContraseña.getText().isBlank()) {
+                    mostrarError("Error", "La contraseña es obligatoria");
+                    return;
+                }
+
+                if (dpFechaAlta.getValue() == null) {
+                    mostrarError("Error", "Debes seleccionar una fecha");
+                    return;
+                }
+
                 Usuario u = new Usuario(
                         txtNombre.getText(),
                         txtContraseña.getText(),
@@ -122,11 +137,11 @@ public class MainApp extends Application {
                         txtObservaciones.getText()
                 );
 
-                usuarios.add(u);      //
-                guardarUsuarios();    //
-
+                usuarios.add(u);
+                guardarUsuarios();
                 limpiarFormulario();
             });
+
 
 
             grid.add(lblNombre, 0, 0);
@@ -195,6 +210,22 @@ public class MainApp extends Application {
             btnGuardar.setMinWidth(100);
 
             btnGuardar.setOnAction(e -> {
+
+                if (txtNombre.getText().isBlank()) {
+                    mostrarError("Error", "El nombre es obligatorio");
+                    return;
+                }
+
+                if (txtDni.getText().isBlank()) {
+                    mostrarError("Error", "El DNI es obligatorio");
+                    return;
+                }
+
+                if (dpUltimaVisita.getValue() == null) {
+                    mostrarError("Error", "Debes indicar la última visita");
+                    return;
+                }
+
                 Cliente c = new Cliente(
                         0,
                         txtNombre.getText(),
@@ -203,11 +234,12 @@ public class MainApp extends Application {
                         dpUltimaVisita.getValue(),
                         chkTipo.isSelected()
                 );
+
                 clientes.add(c);
                 guardarClientes();
-
                 limpiarFormulario();
             });
+
 
             grid.add(lblNombre, 0, 0);
             grid.add(txtNombre, 1, 0);
@@ -271,18 +303,35 @@ public class MainApp extends Application {
         btnGuardar.setMinWidth(100);
 
         btnGuardar.setOnAction(e -> {
+
+            if (txtModelo.getText().isBlank()) {
+                mostrarError("Error", "El modelo es obligatorio");
+                return;
+            }
+
+            if (txtMatricula.getText().isBlank()) {
+                mostrarError("Error", "La matrícula es obligatoria");
+                return;
+            }
+
+            if (dpFechaLlegada.getValue() == null) {
+                mostrarError("Error", "Debes indicar la fecha de llegada");
+                return;
+            }
+
             Vehiculo v = new Vehiculo(
-                    txtModelo.getText(),            // modelo
-                    txtMatricula.getText(),         // matricula
-                    txtTelefono.getText(),          // telefonoDueno
-                    dpFechaLlegada.getValue(),      // fechaLlegada
-                    txtAveria.getText()             // averia
+                    txtModelo.getText(),
+                    txtMatricula.getText(),
+                    txtTelefono.getText(),
+                    dpFechaLlegada.getValue(),
+                    txtAveria.getText()
             );
+
             vehiculos.add(v);
             guardarVehiculos();
-
             limpiarFormulario();
         });
+
 
         grid.add(lblModelo, 0, 0);
         grid.add(txtModelo, 1, 0);
@@ -343,7 +392,6 @@ public class MainApp extends Application {
         TextField txtGarantia = new TextField();
         CheckBox chkRecibido = new CheckBox("Recibido");
 
-        // 🔹 MISMO ANCHO QUE EL RESTO DE FORMULARIOS
         txtReferencia.setPrefWidth(250);
         txtModelo.setPrefWidth(250);
         dpFechaPedido.setPrefWidth(250);
@@ -354,19 +402,42 @@ public class MainApp extends Application {
         btnGuardar.setMinWidth(100);
 
         btnGuardar.setOnAction(e -> {
+
+            if (txtReferencia.getText().isBlank()) {
+                mostrarError("Error", "La referencia es obligatoria");
+                return;
+            }
+
+            if (dpFechaPedido.getValue() == null) {
+                mostrarError("Error", "Debes indicar la fecha del pedido");
+                return;
+            }
+
+            float precio;
+            int garantia;
+
+            try {
+                precio = Float.parseFloat(txtPrecio.getText());
+                garantia = Integer.parseInt(txtGarantia.getText());
+            } catch (Exception ex) {
+                mostrarError("Error", "Precio y garantía deben ser números");
+                return;
+            }
+
             Repuesto r = new Repuesto(
-                    txtReferencia.getText(),               // referencia
-                    txtModelo.getText(),                   // modelo
-                    dpFechaPedido.getValue(),              // fechaPedido
-                    Float.parseFloat(txtPrecio.getText()), // precio
-                    chkRecibido.isSelected(),              // recibido
-                    Integer.parseInt(txtGarantia.getText())// garantiaMeses
+                    txtReferencia.getText(),
+                    txtModelo.getText(),
+                    dpFechaPedido.getValue(),
+                    precio,
+                    chkRecibido.isSelected(),
+                    garantia
             );
+
             repuestos.add(r);
             guardarRepuestos();
-
             limpiarFormulario();
         });
+
 
         grid.add(lblReferencia, 0, 0);
         grid.add(txtReferencia, 1, 0);
@@ -413,8 +484,20 @@ public class MainApp extends Application {
             if (n instanceof PasswordField) ((PasswordField) n).clear();
             if (n instanceof DatePicker) ((DatePicker) n).setValue(null);
             if (n instanceof TextArea) ((TextArea) n).clear();
+            if (n instanceof CheckBox) ((CheckBox) n).setSelected(false);
         });
     }
+
+
+    //MOSTRAR ALERTAS
+    private void mostrarError(String titulo, String mensaje) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(titulo);
+        alert.setHeaderText(null);
+        alert.setContentText(mensaje);
+        alert.showAndWait();
+    }
+
 
     //CARGADO DE DATOS
     private void cargarUsuarios() {
