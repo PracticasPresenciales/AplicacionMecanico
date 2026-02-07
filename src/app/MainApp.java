@@ -116,7 +116,7 @@ public class MainApp extends Application {
         Label lblError = new Label();
         lblError.setStyle("-fx-text-fill: red;");
 
-        Button btnEntrar = new Button("Entrar");
+        Button btnEntrar = new Button("Enter");
         btnEntrar.setDefaultButton(true);
 
         btnEntrar.setOnAction(e -> {
@@ -128,7 +128,7 @@ public class MainApp extends Application {
                 usuarioEnSesion = u;
                 mostrarUIOriginal(stage);   // aquí entra en tu UI real (la del segundo MainApp)
             } else {
-                lblError.setText("Usuario o contraseña incorrectos");
+                lblError.setText("User or Password not correct");
             }
         });
 
@@ -148,7 +148,7 @@ public class MainApp extends Application {
         gridLogin.add(lblError, 1, 4);
 
         stage.setScene(new Scene(gridLogin, 360, 220));
-        stage.setTitle("Login - Gestión Taller");
+        stage.setTitle("Login - Workshop Management System");
         stage.setResizable(false);
         stage.show();
     }
@@ -177,12 +177,12 @@ public class MainApp extends Application {
 
         ComboBox<String> comboEntidad = new ComboBox<>();
         comboEntidad.getItems().addAll(
-                "Usuarios",
-                "Clientes",
-                "Vehículos",
-                "Repuestos"
+                "Users",
+                "Customers",
+                "Vehicle",
+                "Replacements"
         );
-        comboEntidad.setValue("Usuarios");
+        comboEntidad.setValue("Users");
 
         comboEntidad.setOnAction(e -> cargarFormulario(comboEntidad.getValue()));
 
@@ -192,7 +192,7 @@ public class MainApp extends Application {
         grid.setHgap(10);
         grid.setVgap(10);
 
-        cargarFormulario("Usuarios");
+        cargarFormulario("Users");
 
         //
         VBox topBox = new VBox(menuBar, comboEntidad);
@@ -204,7 +204,7 @@ public class MainApp extends Application {
         root.setCenter(grid);  // formularios aquí
 
         stage.setScene(new Scene(root, 550, 450));
-        stage.setTitle("Gestión Taller");
+        stage.setTitle("Workshop Management System");
         stage.setResizable(true);
         stage.show();
     }
@@ -212,12 +212,12 @@ public class MainApp extends Application {
 
     private MenuBar crearMenuBar() {
 
-        Menu menuTablas = new Menu("Ver tablas");
+        Menu menuTablas = new Menu("View Tables");
 
-        MenuItem usuariosItem = new MenuItem("Usuarios");
-        MenuItem clientesItem = new MenuItem("Clientes");
-        MenuItem vehiculosItem = new MenuItem("Vehículos");
-        MenuItem repuestosItem = new MenuItem("Repuestos");
+        MenuItem usuariosItem = new MenuItem("Users");
+        MenuItem clientesItem = new MenuItem("Customers");
+        MenuItem vehiculosItem = new MenuItem("Vehicles");
+        MenuItem repuestosItem = new MenuItem("Replacements");
 
         usuariosItem.setOnAction(e -> abrirTablaUsuarios());
         clientesItem.setOnAction(e -> abrirTablaClientes());
@@ -237,15 +237,15 @@ public class MainApp extends Application {
     private void abrirTablaUsuarios() {
         TableView<Usuario> tabla = new TableView<>();
 
-        TableColumn<Usuario, String> colNombre = new TableColumn<>("Nombre");
+        TableColumn<Usuario, String> colNombre = new TableColumn<>("Name");
         colNombre.setCellValueFactory(d ->
                 new SimpleStringProperty(d.getValue().getNombre()));
 
-        TableColumn<Usuario, String> colPuesto = new TableColumn<>("Puesto");
+        TableColumn<Usuario, String> colPuesto = new TableColumn<>("Position");
         colPuesto.setCellValueFactory(d ->
                 new SimpleStringProperty(d.getValue().getPuesto()));
 
-        TableColumn<Usuario, String> colFecha = new TableColumn<>("Fecha Alta");
+        TableColumn<Usuario, String> colFecha = new TableColumn<>("Hiring Date");
         colFecha.setCellValueFactory(d ->
                 new SimpleStringProperty(
                         d.getValue().getFechaAlta() != null
@@ -253,7 +253,7 @@ public class MainApp extends Application {
                                 : ""
                 ));
 
-        TableColumn<Usuario, String> colObs = new TableColumn<>("Observaciones");
+        TableColumn<Usuario, String> colObs = new TableColumn<>("Observations");
         colObs.setCellValueFactory(d ->
                 new SimpleStringProperty(d.getValue().getObservaciones()));
 
@@ -271,19 +271,19 @@ public class MainApp extends Application {
     private void abrirTablaClientes() {
         TableView<Cliente> tabla = new TableView<>();
 
-        TableColumn<Cliente, String> colNombre = new TableColumn<>("Nombre");
+        TableColumn<Cliente, String> colNombre = new TableColumn<>("Name");
         colNombre.setCellValueFactory(d ->
                 new SimpleStringProperty(d.getValue().getNombre()));
 
-        TableColumn<Cliente, String> colApellidos = new TableColumn<>("Apellidos");
+        TableColumn<Cliente, String> colApellidos = new TableColumn<>("Surname");
         colApellidos.setCellValueFactory(d ->
                 new SimpleStringProperty(d.getValue().getApellidos()));
 
-        TableColumn<Cliente, String> colDni = new TableColumn<>("DNI");
+        TableColumn<Cliente, String> colDni = new TableColumn<>("DNI/NIF");
         colDni.setCellValueFactory(d ->
                 new SimpleStringProperty(d.getValue().getDni()));
 
-        TableColumn<Cliente, String> colFecha = new TableColumn<>("Última visita");
+        TableColumn<Cliente, String> colFecha = new TableColumn<>("Last Visit");
         colFecha.setCellValueFactory(d ->
                 new SimpleStringProperty(
                         d.getValue().getFechaUltimaVisita() != null
@@ -291,10 +291,10 @@ public class MainApp extends Application {
                                 : ""
                 ));
 
-        TableColumn<Cliente, String> colTipo = new TableColumn<>("Tipo");
+        TableColumn<Cliente, String> colTipo = new TableColumn<>("Type");
         colTipo.setCellValueFactory(d ->
                 new SimpleStringProperty(
-                        d.getValue().isTipo() ? "Empresa" : "Particular"));
+                        d.getValue().isTipo() ? "Company" : "Person"));
 
         tabla.getColumns().addAll(
                 colNombre, colApellidos, colDni, colFecha, colTipo
@@ -313,19 +313,19 @@ public class MainApp extends Application {
     private void abrirTablaVehiculos() {
         TableView<Vehiculo> tabla = new TableView<>();
 
-        TableColumn<Vehiculo, String> colModelo = new TableColumn<>("Modelo");
+        TableColumn<Vehiculo, String> colModelo = new TableColumn<>("Model");
         colModelo.setCellValueFactory(d ->
                 new SimpleStringProperty(d.getValue().getModelo()));
 
-        TableColumn<Vehiculo, String> colMatricula = new TableColumn<>("Matrícula");
+        TableColumn<Vehiculo, String> colMatricula = new TableColumn<>("Plate");
         colMatricula.setCellValueFactory(d ->
                 new SimpleStringProperty(d.getValue().getMatricula()));
 
-        TableColumn<Vehiculo, String> colTelefono = new TableColumn<>("Teléfono");
+        TableColumn<Vehiculo, String> colTelefono = new TableColumn<>("Phone Number");
         colTelefono.setCellValueFactory(d ->
                 new SimpleStringProperty(d.getValue().getTelefonoDueno()));
 
-        TableColumn<Vehiculo, String> colFecha = new TableColumn<>("Fecha llegada");
+        TableColumn<Vehiculo, String> colFecha = new TableColumn<>("Arrival Date");
         colFecha.setCellValueFactory(d ->
                 new SimpleStringProperty(
                         d.getValue().getFechaLlegada() != null
@@ -333,7 +333,7 @@ public class MainApp extends Application {
                                 : ""
                 ));
 
-        TableColumn<Vehiculo, String> colAveria = new TableColumn<>("Avería");
+        TableColumn<Vehiculo, String> colAveria = new TableColumn<>("Fault");
         colAveria.setCellValueFactory(d ->
                 new SimpleStringProperty(d.getValue().getAveria()));
 
@@ -355,15 +355,15 @@ public class MainApp extends Application {
     private void abrirTablaRepuestos() {
         TableView<Repuesto> tabla = new TableView<>();
 
-        TableColumn<Repuesto, String> colRef = new TableColumn<>("Referencia");
+        TableColumn<Repuesto, String> colRef = new TableColumn<>("Part Number");
         colRef.setCellValueFactory(d ->
                 new SimpleStringProperty(d.getValue().getReferencia()));
 
-        TableColumn<Repuesto, String> colModelo = new TableColumn<>("Modelo");
+        TableColumn<Repuesto, String> colModelo = new TableColumn<>("Model");
         colModelo.setCellValueFactory(d ->
                 new SimpleStringProperty(d.getValue().getModelo()));
 
-        TableColumn<Repuesto, String> colFecha = new TableColumn<>("Fecha pedido");
+        TableColumn<Repuesto, String> colFecha = new TableColumn<>("Shipment Date");
         colFecha.setCellValueFactory(d ->
                 new SimpleStringProperty(
                         d.getValue().getFechaPedido() != null
@@ -371,16 +371,16 @@ public class MainApp extends Application {
                                 : ""
                 ));
 
-        TableColumn<Repuesto, String> colPrecio = new TableColumn<>("Precio");
+        TableColumn<Repuesto, String> colPrecio = new TableColumn<>("Price");
         colPrecio.setCellValueFactory(d ->
                 new SimpleStringProperty(String.valueOf(d.getValue().getPrecio())));
 
-        TableColumn<Repuesto, String> colRecibido = new TableColumn<>("Recibido");
+        TableColumn<Repuesto, String> colRecibido = new TableColumn<>("Recived");
         colRecibido.setCellValueFactory(d ->
                 new SimpleStringProperty(
                         d.getValue().isRecibido() ? "Sí" : "No"));
 
-        TableColumn<Repuesto, String> colGarantia = new TableColumn<>("Garantía (meses)");
+        TableColumn<Repuesto, String> colGarantia = new TableColumn<>("Warranty");
         colGarantia.setCellValueFactory(d ->
                 new SimpleStringProperty(
                         String.valueOf(d.getValue().getGarantiaMeses())));
@@ -405,21 +405,21 @@ public class MainApp extends Application {
         grid.getChildren().clear();
 
         switch (entidad) {
-            case "Usuarios" -> formularioUsuarios();
-            case "Clientes" -> formularioClientes();
-            case "Vehículos" -> formularioVehiculos();
-            case "Repuestos" -> formularioRepuestos();
+            case "Users" -> formularioUsuarios();
+            case "Customers" -> formularioClientes();
+            case "Vehicles" -> formularioVehiculos();
+            case "Replacement Parts" -> formularioRepuestos();
         }
     }
 
     // FORMULARIO USUARIOS
     private void formularioUsuarios() {
 
-        Label lblNombre = new Label("Nombre");
-        Label lblContraseña = new Label("Contraseña");
-        Label lblPuesto = new Label("Puesto");
-        Label lblFecha = new Label("Fecha de alta");
-        Label lblObs = new Label("Observaciones");
+        Label lblNombre = new Label("Name");
+        Label lblContraseña = new Label("Password");
+        Label lblPuesto = new Label("Position  ");
+        Label lblFecha = new Label("Hiring Date");
+        Label lblObs = new Label("Observations");
 
         lblNombre.setMinWidth(100);
         lblContraseña.setMinWidth(100);
@@ -435,19 +435,19 @@ public class MainApp extends Application {
         txtObsUsuario.setPrefRowCount(4);
 
         //BOTONES FORMULARIO
-        Button btnGuardar = new Button("Guardar");
+        Button btnGuardar = new Button("Save");
         btnGuardar.setMinWidth(100);
 
-        Button btnAnterior = new Button("Anterior");
+        Button btnAnterior = new Button("<<");
         btnAnterior.setMinWidth(100);
 
-        Button btnSiguiente = new Button("Siguiente");
+        Button btnSiguiente = new Button(">>");
         btnSiguiente.setMinWidth(100);
 
-        Button btnModificar = new Button("Modificar");
+        Button btnModificar = new Button("Modify");
         btnSiguiente.setMinWidth(100);
 
-        Button btnEliminar = new Button("Eliminar");
+        Button btnEliminar = new Button("Delete");
         btnSiguiente.setMinWidth(100);
 
         HBox filaBotones = new HBox(10, btnGuardar, btnModificar, btnEliminar);
@@ -456,17 +456,17 @@ public class MainApp extends Application {
         btnGuardar.setOnAction(e -> {
 
             if (txtNombreUsuario.getText().isBlank()) {
-                mostrarError("Error", "El nombre es obligatorio");
+                mostrarError("Error", "You must enter a name");
                 return;
             }
 
             if (txtContraseñaUsuario.getText().isBlank()) {
-                mostrarError("Error", "La contraseña es obligatoria");
+                mostrarError("Error", "You must enter a Password");
                 return;
             }
 
             if (dpFechaAltaUsuario.getValue() == null) {
-                mostrarError("Error", "Debes seleccionar una fecha");
+                mostrarError("Error", "You must select a Date");
                 return;
             }
 
@@ -517,9 +517,9 @@ public class MainApp extends Application {
             if (indiceUsuario < 0) return;
 
             Alert a = new Alert(Alert.AlertType.CONFIRMATION);
-            a.setTitle("Eliminar usuario");
+            a.setTitle("Delete User");
             a.setHeaderText(null);
-            a.setContentText("¿Seguro que quieres eliminar este usuario?");
+            a.setContentText("Are you sure you want to delete this User?");
 
             if (a.showAndWait().get() == ButtonType.OK) {
 
@@ -584,11 +584,11 @@ public class MainApp extends Application {
     // FORMULARIO CLIENTES
     private void formularioClientes() {
 
-        Label lblNombre = new Label("Nombre");
-        Label lblApellidos = new Label("Apellidos");
-        Label lblDni = new Label("DNI");
-        Label lblFecha = new Label("Fecha última visita");
-        Label lblTipo = new Label("Tipo");
+        Label lblNombre = new Label("Name");
+        Label lblApellidos = new Label("Surname");
+        Label lblDni = new Label("DNI/NIF");
+        Label lblFecha = new Label("Last Visit Date");
+        Label lblTipo = new Label("Type");
 
         lblNombre.setMinWidth(140);
         lblApellidos.setMinWidth(140);
@@ -600,26 +600,26 @@ public class MainApp extends Application {
         txtApellidosCliente = new TextField();
         txtDniCliente = new TextField();
         dpUltimaVisitaCliente = new DatePicker();
-        chkTipoCliente = new CheckBox("Empresa");
+        chkTipoCliente = new CheckBox("Company");
 
         txtNombreCliente.setPrefWidth(250);
         txtApellidosCliente.setPrefWidth(250);
         txtDniCliente.setPrefWidth(250);
         dpUltimaVisitaCliente.setPrefWidth(250);
 
-        Button btnGuardar = new Button("Guardar");
+        Button btnGuardar = new Button("Save");
         btnGuardar.setMinWidth(100);
 
-        Button btnAnterior = new Button("Anterior");
+        Button btnAnterior = new Button("<<");
         btnAnterior.setMinWidth(100);
 
-        Button btnSiguiente = new Button("Siguiente");
+        Button btnSiguiente = new Button(">>");
         btnSiguiente.setMinWidth(100);
 
-        Button btnModificar = new Button("Modificar");
+        Button btnModificar = new Button("Modify");
         btnSiguiente.setMinWidth(100);
 
-        Button btnEliminar = new Button("Eliminar");
+        Button btnEliminar = new Button("Delete");
         btnSiguiente.setMinWidth(100);
 
         HBox filaBotones = new HBox(10, btnGuardar, btnModificar, btnEliminar);
@@ -627,17 +627,17 @@ public class MainApp extends Application {
         btnGuardar.setOnAction(e -> {
 
             if (txtNombreCliente.getText().isBlank()) {
-                mostrarError("Error", "El nombre es obligatorio");
+                mostrarError("Error", "You must enter a name");
                 return;
             }
 
             if (txtDniCliente.getText().isBlank()) {
-                mostrarError("Error", "El DNI es obligatorio");
+                mostrarError("Error", "You must enter a DNI/NIF");
                 return;
             }
 
             if (dpUltimaVisitaCliente.getValue() == null) {
-                mostrarError("Error", "Debes indicar la última visita");
+                mostrarError("Error", "You must select a Date");
                 return;
             }
 
@@ -689,9 +689,9 @@ public class MainApp extends Application {
             if (indiceCliente < 0) return;
 
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setTitle("Eliminar cliente");
+            alert.setTitle("Delete customer");
             alert.setHeaderText(null);
-            alert.setContentText("¿Eliminar este cliente?");
+            alert.setContentText("are you sure you want to delete this customer?");
 
             if (alert.showAndWait().get() == ButtonType.OK) {
 
@@ -756,11 +756,11 @@ public class MainApp extends Application {
     // FORMULARIO VEHÍCULOS
     private void formularioVehiculos() {
 
-        Label lblModelo = new Label("Modelo");
-        Label lblMatricula = new Label("Matrícula");
-        Label lblTelefono = new Label("Teléfono dueño");
-        Label lblFecha = new Label("Fecha llegada");
-        Label lblAveria = new Label("Avería");
+        Label lblModelo = new Label("Model");
+        Label lblMatricula = new Label("Plate");
+        Label lblTelefono = new Label("Owner phone number");
+        Label lblFecha = new Label("Arrival Date");
+        Label lblAveria = new Label("Fault");
 
         lblModelo.setMinWidth(140);
         lblMatricula.setMinWidth(140);
@@ -776,19 +776,19 @@ public class MainApp extends Application {
         txtAveriaVehiculo.setPrefRowCount(4);
 
 
-        Button btnGuardar = new Button("Guardar");
+        Button btnGuardar = new Button("Save");
         btnGuardar.setMinWidth(100);
 
-        Button btnAnterior = new Button("Anterior");
+        Button btnAnterior = new Button("<<");
         btnAnterior.setMinWidth(100);
 
-        Button btnSiguiente = new Button("Siguiente");
+        Button btnSiguiente = new Button(">>");
         btnSiguiente.setMinWidth(100);
 
-        Button btnModificar = new Button("Modificar");
+        Button btnModificar = new Button("Modify");
         btnSiguiente.setMinWidth(100);
 
-        Button btnEliminar= new Button("Eliminar");
+        Button btnEliminar= new Button("Delete");
         btnSiguiente.setMinWidth(100);
 
         HBox filaBotones = new HBox(10, btnGuardar, btnModificar, btnEliminar);
@@ -796,17 +796,17 @@ public class MainApp extends Application {
         btnGuardar.setOnAction(e -> {
 
             if (txtModeloVehiculo.getText().isBlank()) {
-                mostrarError("Error", "El modelo es obligatorio");
+                mostrarError("Error", "You must enter a Model");
                 return;
             }
 
             if (txtMatriculaVehiculo.getText().isBlank()) {
-                mostrarError("Error", "La matrícula es obligatoria");
+                mostrarError("Error", "You must enter a Plate");
                 return;
             }
 
             if (dpFechaLlegadaVehiculo.getValue() == null) {
-                mostrarError("Error", "Debes indicar la fecha de llegada");
+                mostrarError("Error", "You must select a date");
                 return;
             }
 
@@ -857,9 +857,9 @@ public class MainApp extends Application {
             if (indiceVehiculo < 0) return;
 
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setTitle("Eliminar vehículo");
+            alert.setTitle("Delete Vehicle");
             alert.setHeaderText(null);
-            alert.setContentText("¿Seguro que quieres eliminar este vehículo?");
+            alert.setContentText("Are you sure you want to delete this vehicle?");
 
             if (alert.showAndWait().get() == ButtonType.OK) {
 
@@ -925,12 +925,12 @@ public class MainApp extends Application {
     // FORMULARIO REPUESTOS
     private void formularioRepuestos() {
 
-        Label lblReferencia = new Label("Referencia");
-        Label lblModelo = new Label("Modelo");
-        Label lblFecha = new Label("Fecha pedido");
-        Label lblPrecio = new Label("Precio");
-        Label lblRecibido = new Label("Recibido");
-        Label lblGarantia = new Label("Garantía (meses)");
+        Label lblReferencia = new Label("Part Number");
+        Label lblModelo = new Label("Model");
+        Label lblFecha = new Label("Order Date");
+        Label lblPrecio = new Label("Price");
+        Label lblRecibido = new Label("Recieved");
+        Label lblGarantia = new Label("Warranty");
 
         lblReferencia.setMinWidth(140);
         lblModelo.setMinWidth(140);
@@ -944,7 +944,7 @@ public class MainApp extends Application {
         dpFechaPedidoRepuesto = new DatePicker();
         txtPrecioRepuesto = new TextField();
         txtGarantiaRepuesto = new TextField();
-        chkRecibidoRepuesto = new CheckBox("Recibido");
+        chkRecibidoRepuesto = new CheckBox("Recieved");
 
         txtReferenciaRepuesto.setPrefWidth(250);
         txtModeloRepuesto.setPrefWidth(250);
@@ -952,19 +952,19 @@ public class MainApp extends Application {
         txtPrecioRepuesto.setPrefWidth(250);
         txtGarantiaRepuesto.setPrefWidth(250);
 
-        Button btnGuardar = new Button("Guardar");
+        Button btnGuardar = new Button("Save");
         btnGuardar.setMinWidth(100);
 
-        Button btnAnterior = new Button("Anterior");
+        Button btnAnterior = new Button("<<");
         btnAnterior.setMinWidth(100);
 
-        Button btnSiguiente = new Button("Siguiente");
+        Button btnSiguiente = new Button(">>");
         btnSiguiente.setMinWidth(100);
 
-        Button btnModificar = new Button("Modificar");
+        Button btnModificar = new Button("Modify");
         btnSiguiente.setMinWidth(100);
 
-        Button btnEliminar = new Button("Eliminar");
+        Button btnEliminar = new Button("Delete");
         btnSiguiente.setMinWidth(100);
 
         HBox FilaBotones = new HBox(btnGuardar, btnModificar, btnEliminar);
@@ -973,12 +973,12 @@ public class MainApp extends Application {
         btnGuardar.setOnAction(e -> {
 
                     if (txtReferenciaRepuesto.getText().isBlank()) {
-                        mostrarError("Error", "La referencia es obligatoria");
+                        mostrarError("Error", "You must enter a Part Number");
                         return;
                     }
 
                     if (dpFechaPedidoRepuesto.getValue() == null) {
-                        mostrarError("Error", "Debes indicar la fecha del pedido");
+                        mostrarError("Error", "You must enter a order Date");
                         return;
                     }
 
@@ -989,7 +989,7 @@ public class MainApp extends Application {
                         precio = Float.parseFloat(txtPrecioRepuesto.getText());
                         garantia = Integer.parseInt(txtGarantiaRepuesto.getText());
                     } catch (Exception ex) {
-                        mostrarError("Error", "Precio y garantía deben ser números");
+                        mostrarError("Error", "Price and warranty must be Numbers");
                         return;
                     }
 
@@ -1042,9 +1042,9 @@ public class MainApp extends Application {
             if (indiceRepuesto < 0) return;
 
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setTitle("Eliminar repuesto");
+            alert.setTitle("Delete replacement?");
             alert.setHeaderText(null);
-            alert.setContentText("¿Seguro que quieres eliminar este repuesto?");
+            alert.setContentText("Are you sure you want to delete this replacement");
 
             if (alert.showAndWait().get() == ButtonType.OK) {
 
