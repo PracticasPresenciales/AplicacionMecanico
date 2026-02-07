@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -185,26 +186,29 @@ public class MainApp extends Application {
 
         comboEntidad.setOnAction(e -> cargarFormulario(comboEntidad.getValue()));
 
-        MenuBar menuBar = crearMenuBar(); // menú nuevo
+        MenuBar menuBar = crearMenuBar();
 
         grid.setPadding(new Insets(10));
         grid.setHgap(10);
         grid.setVgap(10);
 
-        comboEntidad.setOnAction(e ->
-                cargarFormulario(comboEntidad.getValue())
-        );
-
         cargarFormulario("Usuarios");
 
-        VBox root = new VBox(10, comboEntidad, grid);
-        root.setPadding(new Insets(10));
+        //
+        VBox topBox = new VBox(menuBar, comboEntidad);
+        topBox.setSpacing(5);
+        topBox.setPadding(new Insets(5));
 
-        stage.setScene(new Scene(root, 500, 420));
+        BorderPane root = new BorderPane();
+        root.setTop(topBox);   // menú + combo SIEMPRE visibles
+        root.setCenter(grid);  // formularios aquí
+
+        stage.setScene(new Scene(root, 550, 450));
         stage.setTitle("Gestión Taller");
         stage.setResizable(true);
         stage.show();
     }
+
 
     private MenuBar crearMenuBar() {
 
@@ -233,75 +237,167 @@ public class MainApp extends Application {
     private void abrirTablaUsuarios() {
         TableView<Usuario> tabla = new TableView<>();
 
-        TableColumn<Usuario,String> colNombre = new TableColumn<>("Nombre");
-        colNombre.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getNombre()));
+        TableColumn<Usuario, String> colNombre = new TableColumn<>("Nombre");
+        colNombre.setCellValueFactory(d ->
+                new SimpleStringProperty(d.getValue().getNombre()));
 
-        TableColumn<Usuario,String> colPuesto = new TableColumn<>("Puesto");
-        colPuesto.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getPuesto()));
+        TableColumn<Usuario, String> colPuesto = new TableColumn<>("Puesto");
+        colPuesto.setCellValueFactory(d ->
+                new SimpleStringProperty(d.getValue().getPuesto()));
 
-        tabla.getColumns().addAll(colNombre,colPuesto);
+        TableColumn<Usuario, String> colFecha = new TableColumn<>("Fecha Alta");
+        colFecha.setCellValueFactory(d ->
+                new SimpleStringProperty(
+                        d.getValue().getFechaAlta() != null
+                                ? d.getValue().getFechaAlta().toString()
+                                : ""
+                ));
+
+        TableColumn<Usuario, String> colObs = new TableColumn<>("Observaciones");
+        colObs.setCellValueFactory(d ->
+                new SimpleStringProperty(d.getValue().getObservaciones()));
+
+        tabla.getColumns().addAll(colNombre, colPuesto, colFecha, colObs);
         tabla.setItems(FXCollections.observableArrayList(usuarios));
+        tabla.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
         Stage ventana = new Stage();
-        ventana.setScene(new Scene(new VBox(tabla),400,300));
+        ventana.setScene(new Scene(new VBox(tabla), 700, 300));
         ventana.setTitle("Usuarios");
         ventana.show();
     }
 
+
     private void abrirTablaClientes() {
         TableView<Cliente> tabla = new TableView<>();
 
-        TableColumn<Cliente,String> colNombre = new TableColumn<>("Nombre");
-        colNombre.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getNombre()));
+        TableColumn<Cliente, String> colNombre = new TableColumn<>("Nombre");
+        colNombre.setCellValueFactory(d ->
+                new SimpleStringProperty(d.getValue().getNombre()));
 
-        TableColumn<Cliente,String> colDni = new TableColumn<>("DNI");
-        colDni.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getDni()));
+        TableColumn<Cliente, String> colApellidos = new TableColumn<>("Apellidos");
+        colApellidos.setCellValueFactory(d ->
+                new SimpleStringProperty(d.getValue().getApellidos()));
 
-        tabla.getColumns().addAll(colNombre,colDni);
+        TableColumn<Cliente, String> colDni = new TableColumn<>("DNI");
+        colDni.setCellValueFactory(d ->
+                new SimpleStringProperty(d.getValue().getDni()));
+
+        TableColumn<Cliente, String> colFecha = new TableColumn<>("Última visita");
+        colFecha.setCellValueFactory(d ->
+                new SimpleStringProperty(
+                        d.getValue().getFechaUltimaVisita() != null
+                                ? d.getValue().getFechaUltimaVisita().toString()
+                                : ""
+                ));
+
+        TableColumn<Cliente, String> colTipo = new TableColumn<>("Tipo");
+        colTipo.setCellValueFactory(d ->
+                new SimpleStringProperty(
+                        d.getValue().isTipo() ? "Empresa" : "Particular"));
+
+        tabla.getColumns().addAll(
+                colNombre, colApellidos, colDni, colFecha, colTipo
+        );
+
         tabla.setItems(FXCollections.observableArrayList(clientes));
+        tabla.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
         Stage ventana = new Stage();
-        ventana.setScene(new Scene(new VBox(tabla),400,300));
+        ventana.setScene(new Scene(new VBox(tabla), 800, 300));
         ventana.setTitle("Clientes");
         ventana.show();
     }
 
+
     private void abrirTablaVehiculos() {
         TableView<Vehiculo> tabla = new TableView<>();
 
-        TableColumn<Vehiculo,String> colModelo = new TableColumn<>("Modelo");
-        colModelo.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getModelo()));
+        TableColumn<Vehiculo, String> colModelo = new TableColumn<>("Modelo");
+        colModelo.setCellValueFactory(d ->
+                new SimpleStringProperty(d.getValue().getModelo()));
 
-        TableColumn<Vehiculo,String> colMatricula = new TableColumn<>("Matrícula");
-        colMatricula.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getMatricula()));
+        TableColumn<Vehiculo, String> colMatricula = new TableColumn<>("Matrícula");
+        colMatricula.setCellValueFactory(d ->
+                new SimpleStringProperty(d.getValue().getMatricula()));
 
-        tabla.getColumns().addAll(colModelo,colMatricula);
+        TableColumn<Vehiculo, String> colTelefono = new TableColumn<>("Teléfono");
+        colTelefono.setCellValueFactory(d ->
+                new SimpleStringProperty(d.getValue().getTelefonoDueno()));
+
+        TableColumn<Vehiculo, String> colFecha = new TableColumn<>("Fecha llegada");
+        colFecha.setCellValueFactory(d ->
+                new SimpleStringProperty(
+                        d.getValue().getFechaLlegada() != null
+                                ? d.getValue().getFechaLlegada().toString()
+                                : ""
+                ));
+
+        TableColumn<Vehiculo, String> colAveria = new TableColumn<>("Avería");
+        colAveria.setCellValueFactory(d ->
+                new SimpleStringProperty(d.getValue().getAveria()));
+
+        tabla.getColumns().addAll(
+                colModelo, colMatricula, colTelefono, colFecha, colAveria
+        );
+
         tabla.setItems(FXCollections.observableArrayList(vehiculos));
+        tabla.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
         Stage ventana = new Stage();
-        ventana.setScene(new Scene(new VBox(tabla),400,300));
+        ventana.setScene(new Scene(new VBox(tabla), 850, 300));
         ventana.setTitle("Vehículos");
         ventana.show();
     }
 
 
+
     private void abrirTablaRepuestos() {
         TableView<Repuesto> tabla = new TableView<>();
 
-        TableColumn<Repuesto,String> colRef = new TableColumn<>("Referencia");
-        colRef.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getReferencia()));
+        TableColumn<Repuesto, String> colRef = new TableColumn<>("Referencia");
+        colRef.setCellValueFactory(d ->
+                new SimpleStringProperty(d.getValue().getReferencia()));
 
-        TableColumn<Repuesto,String> colModelo = new TableColumn<>("Modelo");
-        colModelo.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getModelo()));
+        TableColumn<Repuesto, String> colModelo = new TableColumn<>("Modelo");
+        colModelo.setCellValueFactory(d ->
+                new SimpleStringProperty(d.getValue().getModelo()));
 
-        tabla.getColumns().addAll(colRef,colModelo);
+        TableColumn<Repuesto, String> colFecha = new TableColumn<>("Fecha pedido");
+        colFecha.setCellValueFactory(d ->
+                new SimpleStringProperty(
+                        d.getValue().getFechaPedido() != null
+                                ? d.getValue().getFechaPedido().toString()
+                                : ""
+                ));
+
+        TableColumn<Repuesto, String> colPrecio = new TableColumn<>("Precio");
+        colPrecio.setCellValueFactory(d ->
+                new SimpleStringProperty(String.valueOf(d.getValue().getPrecio())));
+
+        TableColumn<Repuesto, String> colRecibido = new TableColumn<>("Recibido");
+        colRecibido.setCellValueFactory(d ->
+                new SimpleStringProperty(
+                        d.getValue().isRecibido() ? "Sí" : "No"));
+
+        TableColumn<Repuesto, String> colGarantia = new TableColumn<>("Garantía (meses)");
+        colGarantia.setCellValueFactory(d ->
+                new SimpleStringProperty(
+                        String.valueOf(d.getValue().getGarantiaMeses())));
+
+        tabla.getColumns().addAll(
+                colRef, colModelo, colFecha, colPrecio, colRecibido, colGarantia
+        );
+
         tabla.setItems(FXCollections.observableArrayList(repuestos));
+        tabla.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
         Stage ventana = new Stage();
-        ventana.setScene(new Scene(new VBox(tabla),400,300));
+        ventana.setScene(new Scene(new VBox(tabla), 900, 300));
         ventana.setTitle("Repuestos");
         ventana.show();
     }
+
 
 
     // TODO CARGA FORMULARIO SEGÚN ENTIDAD
@@ -629,7 +725,7 @@ public class MainApp extends Application {
         grid.add(lblTipo, 0, 4);
         grid.add(chkTipoCliente, 1, 4);
 
-       grid.add(filaBotones, 1, 5);
+        grid.add(filaBotones, 1, 5);
 
         grid.add(btnAnterior, 0, 6);
         grid.add(btnSiguiente, 1, 6);
