@@ -1,1 +1,3 @@
-0;Lola;Mara;78989897J;2026-02-12;true
+0;Lola;Mara;78989897J;2026-02-12;false
+0;Telepizza;;889182918;2026-02-03;true
+0;Raul;Alvarez;1212731V;2026-02-10;false

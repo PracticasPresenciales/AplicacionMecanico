@@ -1,1 +1,4 @@
 Admin;1234;;2026-02-07;
+Valero;1234;Mechanic;2026-01-27;Birthday on May 24
+Fran;1234;CEO;2025-09-30;Owns the place
+Alvaro;1234;Apprentice ;2026-02-06;He is starting, do not let him alone

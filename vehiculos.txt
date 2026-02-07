@@ -1,1 +1,3 @@
-aaa;asfda;asfd;2026-02-11;asda
+BMW 3 Series;21125 ASG;672541254;2026-02-12;Leaking Oil
+Porsche 911;12312 HTY;672781234;2026-02-12;Crashed, Damage in the front bumper
+Ford Focus MK3;12123 BRP;645122398;2026-01-19;Does not start
