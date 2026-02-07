@@ -7,6 +7,8 @@ import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.scene.layout.HBox;
+
 
 import model.Usuario;
 import model.Cliente;
@@ -232,10 +234,21 @@ public class MainApp extends Application {
         //BOTONES FORMULARIO
         Button btnGuardar = new Button("Guardar");
         btnGuardar.setMinWidth(100);
+
         Button btnAnterior = new Button("Anterior");
         btnAnterior.setMinWidth(100);
+
         Button btnSiguiente = new Button("Siguiente");
         btnSiguiente.setMinWidth(100);
+
+        Button btnModificar = new Button("Modificar");
+        btnSiguiente.setMinWidth(100);
+
+        Button btnEliminar = new Button("Eliminar");
+        btnSiguiente.setMinWidth(100);
+
+        HBox filaBotones = new HBox(10, btnGuardar, btnModificar, btnEliminar);
+
 
         btnGuardar.setOnAction(e -> {
 
@@ -281,6 +294,46 @@ public class MainApp extends Application {
             }
         });
 
+        btnModificar.setOnAction(e -> {
+
+            if (indiceUsuario < 0) return;
+
+            Usuario u = usuarios.get(indiceUsuario);
+
+            u.setNombre(txtNombreUsuario.getText());
+            u.setContraseña(txtContraseñaUsuario.getText());
+            u.setPuesto(txtPuestoUsuario.getText());
+            u.setFechaAlta(dpFechaAltaUsuario.getValue());
+            u.setObservaciones(txtObsUsuario.getText());
+
+            guardarUsuarios();
+        });
+
+        btnEliminar.setOnAction(e -> {
+
+            if (indiceUsuario < 0) return;
+
+            Alert a = new Alert(Alert.AlertType.CONFIRMATION);
+            a.setTitle("Eliminar usuario");
+            a.setHeaderText(null);
+            a.setContentText("¿Seguro que quieres eliminar este usuario?");
+
+            if (a.showAndWait().get() == ButtonType.OK) {
+
+                usuarios.remove(indiceUsuario);
+                guardarUsuarios();
+
+                if (usuarios.isEmpty()) {
+                    indiceUsuario = -1;
+                    limpiarFormulario();
+                } else {
+                    indiceUsuario = Math.min(indiceUsuario, usuarios.size() - 1);
+                    mostrarUsuario();
+                }
+            }
+        });
+
+
         grid.add(lblNombre, 0, 0);
         grid.add(txtNombreUsuario, 1, 0);
 
@@ -296,7 +349,7 @@ public class MainApp extends Application {
         grid.add(lblObs, 0, 4);
         grid.add(txtObsUsuario, 1, 4);
 
-        grid.add(btnGuardar, 1, 5);
+        grid.add(filaBotones, 1, 5);
 
         grid.add(btnAnterior, 0, 6);
         grid.add(btnSiguiente, 1, 6);
@@ -353,10 +406,20 @@ public class MainApp extends Application {
 
         Button btnGuardar = new Button("Guardar");
         btnGuardar.setMinWidth(100);
+
         Button btnAnterior = new Button("Anterior");
         btnAnterior.setMinWidth(100);
+
         Button btnSiguiente = new Button("Siguiente");
         btnSiguiente.setMinWidth(100);
+
+        Button btnModificar = new Button("Modificar");
+        btnSiguiente.setMinWidth(100);
+
+        Button btnEliminar = new Button("Eliminar");
+        btnSiguiente.setMinWidth(100);
+
+        HBox filaBotones = new HBox(10, btnGuardar, btnModificar, btnEliminar);
 
         btnGuardar.setOnAction(e -> {
 
@@ -403,6 +466,47 @@ public class MainApp extends Application {
             }
         });
 
+        btnModificar.setOnAction(e -> {
+
+            if (indiceCliente < 0) return;
+
+            Cliente c = clientes.get(indiceCliente);
+
+            c.setNombre(txtNombreCliente.getText());
+            c.setApellidos(txtApellidosCliente.getText());
+            c.setDni(txtDniCliente.getText());
+            c.setFechaUltimaVisita(dpUltimaVisitaCliente.getValue());
+            c.setTipo(chkTipoCliente.isSelected());
+
+            guardarClientes();
+        });
+
+        btnEliminar.setOnAction(e -> {
+
+            if (indiceCliente < 0) return;
+
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Eliminar cliente");
+            alert.setHeaderText(null);
+            alert.setContentText("¿Eliminar este cliente?");
+
+            if (alert.showAndWait().get() == ButtonType.OK) {
+
+                clientes.remove(indiceCliente);
+                guardarClientes();
+
+                if (clientes.isEmpty()) {
+                    indiceCliente = -1;
+                    limpiarFormulario();
+                } else {
+                    indiceCliente = Math.min(indiceCliente, clientes.size() - 1);
+                    mostrarCliente();
+                }
+            }
+        });
+
+
+
         grid.add(lblNombre, 0, 0);
         grid.add(txtNombreCliente, 1, 0);
 
@@ -418,7 +522,7 @@ public class MainApp extends Application {
         grid.add(lblTipo, 0, 4);
         grid.add(chkTipoCliente, 1, 4);
 
-        grid.add(btnGuardar, 1, 5);
+       grid.add(filaBotones, 1, 5);
 
         grid.add(btnAnterior, 0, 6);
         grid.add(btnSiguiente, 1, 6);
@@ -471,10 +575,20 @@ public class MainApp extends Application {
 
         Button btnGuardar = new Button("Guardar");
         btnGuardar.setMinWidth(100);
+
         Button btnAnterior = new Button("Anterior");
         btnAnterior.setMinWidth(100);
+
         Button btnSiguiente = new Button("Siguiente");
         btnSiguiente.setMinWidth(100);
+
+        Button btnModificar = new Button("Modificar");
+        btnSiguiente.setMinWidth(100);
+
+        Button btnEliminar= new Button("Eliminar");
+        btnSiguiente.setMinWidth(100);
+
+        HBox filaBotones = new HBox(10, btnGuardar, btnModificar, btnEliminar);
 
         btnGuardar.setOnAction(e -> {
 
@@ -520,6 +634,45 @@ public class MainApp extends Application {
             }
         });
 
+        btnModificar.setOnAction(e -> {
+
+            if (indiceVehiculo < 0) return;
+
+            Vehiculo v = vehiculos.get(indiceVehiculo);
+
+            v.setModelo(txtModeloVehiculo.getText());
+            v.setMatricula(txtMatriculaVehiculo.getText());
+            v.setTelefonoDueno(txtTelefonoVehiculo.getText());
+            v.setFechaLlegada(dpFechaLlegadaVehiculo.getValue());
+            v.setAveria(txtAveriaVehiculo.getText());
+
+            guardarVehiculos();
+        });
+
+        btnEliminar.setOnAction(e -> {
+
+            if (indiceVehiculo < 0) return;
+
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Eliminar vehículo");
+            alert.setHeaderText(null);
+            alert.setContentText("¿Seguro que quieres eliminar este vehículo?");
+
+            if (alert.showAndWait().get() == ButtonType.OK) {
+
+                vehiculos.remove(indiceVehiculo);
+                guardarVehiculos();
+
+                if (vehiculos.isEmpty()) {
+                    indiceVehiculo = -1;
+                    limpiarFormulario();
+                } else {
+                    indiceVehiculo = Math.min(indiceVehiculo, vehiculos.size() - 1);
+                    mostrarVehiculo();
+                }
+            }
+        });
+
 
         grid.add(lblModelo, 0, 0);
         grid.add(txtModeloVehiculo, 1, 0);
@@ -536,7 +689,7 @@ public class MainApp extends Application {
         grid.add(lblAveria, 0, 4);
         grid.add(txtAveriaVehiculo, 1, 4);
 
-        grid.add(btnGuardar, 1, 5);
+        grid.add(filaBotones,1,5);
 
         grid.add(btnAnterior, 0, 6);
         grid.add(btnSiguiente, 1, 6);
@@ -598,10 +751,21 @@ public class MainApp extends Application {
 
         Button btnGuardar = new Button("Guardar");
         btnGuardar.setMinWidth(100);
+
         Button btnAnterior = new Button("Anterior");
         btnAnterior.setMinWidth(100);
+
         Button btnSiguiente = new Button("Siguiente");
         btnSiguiente.setMinWidth(100);
+
+        Button btnModificar = new Button("Modificar");
+        btnSiguiente.setMinWidth(100);
+
+        Button btnEliminar = new Button("Eliminar");
+        btnSiguiente.setMinWidth(100);
+
+        HBox FilaBotones = new HBox(btnGuardar, btnModificar, btnEliminar);
+
 
         btnGuardar.setOnAction(e -> {
 
@@ -654,7 +818,45 @@ public class MainApp extends Application {
             }
         });
 
+        btnModificar.setOnAction(e -> {
 
+            if (indiceRepuesto < 0) return;
+
+            Repuesto r = repuestos.get(indiceRepuesto);
+
+            r.setReferencia(txtReferenciaRepuesto.getText());
+            r.setModelo(txtModeloRepuesto.getText());
+            r.setFechaPedido(dpFechaPedidoRepuesto.getValue());
+            r.setPrecio(Float.parseFloat(txtPrecioRepuesto.getText()));
+            r.setGarantiaMeses(Integer.parseInt(txtGarantiaRepuesto.getText()));
+            r.setRecibido(chkRecibidoRepuesto.isSelected());
+
+            guardarRepuestos();
+        });
+
+        btnEliminar.setOnAction(e -> {
+
+            if (indiceRepuesto < 0) return;
+
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Eliminar repuesto");
+            alert.setHeaderText(null);
+            alert.setContentText("¿Seguro que quieres eliminar este repuesto?");
+
+            if (alert.showAndWait().get() == ButtonType.OK) {
+
+                repuestos.remove(indiceRepuesto);
+                guardarRepuestos();
+
+                if (repuestos.isEmpty()) {
+                    indiceRepuesto = -1;
+                    limpiarFormulario();
+                } else {
+                    indiceRepuesto = Math.min(indiceRepuesto, repuestos.size() - 1);
+                    mostrarRepuesto();
+                }
+            }
+        });
 
         grid.add(lblReferencia, 0, 0);
         grid.add(txtReferenciaRepuesto, 1, 0);
@@ -674,7 +876,7 @@ public class MainApp extends Application {
         grid.add(lblGarantia, 0, 5);
         grid.add(txtGarantiaRepuesto, 1, 5);
 
-        grid.add(btnGuardar, 1, 6);
+        grid.add(FilaBotones, 1, 6);
 
         grid.add(btnAnterior, 0, 7);
         grid.add(btnSiguiente, 1, 7);
