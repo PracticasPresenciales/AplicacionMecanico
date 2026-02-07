@@ -13,6 +13,7 @@ import model.Cliente;
 import model.Vehiculo;
 import model.Repuesto;
 
+import java.io.*;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.PrintWriter;
@@ -73,6 +74,9 @@ public class MainApp extends Application {
 
     private GridPane grid = new GridPane();
 
+    // LOgin
+    private Usuario usuarioEnSesion = null;
+
     @Override
     public void start(Stage stage) {
 
@@ -81,6 +85,87 @@ public class MainApp extends Application {
         cargarClientes();
         cargarVehiculos();
         cargarRepuestos();
+
+        // Admin/1234
+        if (!existeUsuario("Admin")) {
+            usuarios.add(new Usuario("Admin", "1234", "", LocalDate.now(), ""));
+            guardarUsuarios();
+        }
+
+        // Mostrar login primero
+        mostrarLogin(stage);
+    }
+
+    // LOGIN
+    private void mostrarLogin(Stage stage) {
+
+        Label titulo = new Label("Login");
+        titulo.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
+
+        TextField txtUsuario = new TextField();
+        PasswordField txtPassword = new PasswordField();
+
+        Label lblError = new Label();
+        lblError.setStyle("-fx-text-fill: red;");
+
+        Button btnEntrar = new Button("Entrar");
+        btnEntrar.setDefaultButton(true);
+
+        btnEntrar.setOnAction(e -> {
+            String user = (txtUsuario.getText() == null) ? "" : txtUsuario.getText().trim();
+            String pass = (txtPassword.getText() == null) ? "" : txtPassword.getText();
+
+            Usuario u = loginCorrecto(user, pass);
+            if (u != null) {
+                usuarioEnSesion = u;
+                mostrarUIOriginal(stage);   // aquí entra en tu UI real (la del segundo MainApp)
+            } else {
+                lblError.setText("Usuario o contraseña incorrectos");
+            }
+        });
+
+        txtPassword.setOnAction(e -> btnEntrar.fire());
+
+        GridPane gridLogin = new GridPane();
+        gridLogin.setPadding(new Insets(12));
+        gridLogin.setHgap(10);
+        gridLogin.setVgap(10);
+
+        gridLogin.add(titulo, 0, 0, 2, 1);
+        gridLogin.add(new Label("User"), 0, 1);
+        gridLogin.add(txtUsuario, 1, 1);
+        gridLogin.add(new Label("Password"), 0, 2);
+        gridLogin.add(txtPassword, 1, 2);
+        gridLogin.add(btnEntrar, 1, 3);
+        gridLogin.add(lblError, 1, 4);
+
+        stage.setScene(new Scene(gridLogin, 360, 220));
+        stage.setTitle("Login - Gestión Taller");
+        stage.setResizable(false);
+        stage.show();
+    }
+
+    private Usuario loginCorrecto(String user, String pass) {
+        for (Usuario u : usuarios) {
+            if (u.getNombre() != null && u.getContraseña() != null
+                    && u.getNombre().equalsIgnoreCase(user)
+                    && u.getContraseña().equals(pass)) {
+                return u;
+            }
+        }
+        return null;
+    }
+
+    private boolean existeUsuario(String nombre) {
+        for (Usuario u : usuarios) {
+            if (u.getNombre() != null && u.getNombre().equalsIgnoreCase(nombre)) return true;
+        }
+        return false;
+    }
+
+
+    // UI
+    private void mostrarUIOriginal(Stage stage) {
 
         ComboBox<String> comboEntidad = new ComboBox<>();
         comboEntidad.getItems().addAll(
@@ -106,6 +191,7 @@ public class MainApp extends Application {
 
         stage.setScene(new Scene(root, 500, 420));
         stage.setTitle("Gestión Taller");
+        stage.setResizable(true);
         stage.show();
     }
 
@@ -147,10 +233,9 @@ public class MainApp extends Application {
         Button btnGuardar = new Button("Guardar");
         btnGuardar.setMinWidth(100);
         Button btnAnterior = new Button("Anterior");
-        btnGuardar.setMinWidth(100);
+        btnAnterior.setMinWidth(100);
         Button btnSiguiente = new Button("Siguiente");
-        btnGuardar.setMinWidth(100);
-
+        btnSiguiente.setMinWidth(100);
 
         btnGuardar.setOnAction(e -> {
 
@@ -224,7 +309,6 @@ public class MainApp extends Application {
     }
 
     // GUARDAR USUARIOS
-
     private void guardarUsuarios() {
         try (PrintWriter pw = new PrintWriter(FICHERO_USUARIOS)) {
             for (Usuario u : usuarios) {
@@ -262,7 +346,6 @@ public class MainApp extends Application {
         dpUltimaVisitaCliente = new DatePicker();
         chkTipoCliente = new CheckBox("Empresa");
 
-
         txtNombreCliente.setPrefWidth(250);
         txtApellidosCliente.setPrefWidth(250);
         txtDniCliente.setPrefWidth(250);
@@ -271,10 +354,9 @@ public class MainApp extends Application {
         Button btnGuardar = new Button("Guardar");
         btnGuardar.setMinWidth(100);
         Button btnAnterior = new Button("Anterior");
-        btnGuardar.setMinWidth(100);
+        btnAnterior.setMinWidth(100);
         Button btnSiguiente = new Button("Siguiente");
-        btnGuardar.setMinWidth(100);
-
+        btnSiguiente.setMinWidth(100);
 
         btnGuardar.setOnAction(e -> {
 
@@ -341,12 +423,10 @@ public class MainApp extends Application {
         grid.add(btnAnterior, 0, 6);
         grid.add(btnSiguiente, 1, 6);
 
-
         if (!clientes.isEmpty()) {
             indiceCliente = 0;
             mostrarCliente();
         }
-
     }
 
     // GUARDAR DATOS CLIENTES
@@ -392,10 +472,9 @@ public class MainApp extends Application {
         Button btnGuardar = new Button("Guardar");
         btnGuardar.setMinWidth(100);
         Button btnAnterior = new Button("Anterior");
-        btnGuardar.setMinWidth(100);
+        btnAnterior.setMinWidth(100);
         Button btnSiguiente = new Button("Siguiente");
-        btnGuardar.setMinWidth(100);
-
+        btnSiguiente.setMinWidth(100);
 
         btnGuardar.setOnAction(e -> {
 
@@ -520,9 +599,9 @@ public class MainApp extends Application {
         Button btnGuardar = new Button("Guardar");
         btnGuardar.setMinWidth(100);
         Button btnAnterior = new Button("Anterior");
-        btnGuardar.setMinWidth(100);
+        btnAnterior.setMinWidth(100);
         Button btnSiguiente = new Button("Siguiente");
-        btnGuardar.setMinWidth(100);
+        btnSiguiente.setMinWidth(100);
 
         btnGuardar.setOnAction(e -> {
 
@@ -705,24 +784,39 @@ public class MainApp extends Application {
         try (BufferedReader br = new BufferedReader(new FileReader(FICHERO_USUARIOS))) {
             String linea;
             while ((linea = br.readLine()) != null) {
-                String[] p = linea.split(";");
+                String[] p = linea.split(";", -1);
 
-                usuarios.add(new Usuario(
-                        p[0],                    // nombre
-                        p[1],                    // contraseña
-                        p[2],                    // puesto
-                        LocalDate.parse(p[3]),   // fechaAlta
-                        p[4]                     // observaciones
-                ));
+                if (p.length < 2) continue;
+
+                String nombre = p[0];
+                String pass = p[1];
+                String puesto = (p.length > 2) ? p[2] : "";
+
+                LocalDate fecha = LocalDate.now();
+                if (p.length > 3 && p[3] != null && !p[3].isBlank() && !"null".equalsIgnoreCase(p[3])) {
+                    try { fecha = LocalDate.parse(p[3]); } catch (Exception ignored) {}
+                }
+
+                String obs = (p.length > 4) ? p[4] : "";
+
+                if (nombre != null && !nombre.isBlank() && pass != null && !pass.isBlank()) {
+                    usuarios.add(new Usuario(nombre, pass, puesto, fecha, obs));
+                }
             }
         } catch (Exception ignored) {}
     }
 
     private void cargarClientes() {
+        clientes.clear();
+
+        File f = new File(FICHERO_CLIENTES);
+        if (!f.exists()) return;
+
         try (BufferedReader br = new BufferedReader(new FileReader(FICHERO_CLIENTES))) {
             String linea;
             while ((linea = br.readLine()) != null) {
-                String[] p = linea.split(";");
+                String[] p = linea.split(";", -1);
+                if (p.length < 6) continue;
 
                 clientes.add(new Cliente(
                         Integer.parseInt(p[0]),
@@ -737,10 +831,16 @@ public class MainApp extends Application {
     }
 
     private void cargarVehiculos() {
+        vehiculos.clear();
+
+        File f = new File(FICHERO_VEHICULOS);
+        if (!f.exists()) return;
+
         try (BufferedReader br = new BufferedReader(new FileReader(FICHERO_VEHICULOS))) {
             String linea;
             while ((linea = br.readLine()) != null) {
-                String[] p = linea.split(";");
+                String[] p = linea.split(";", -1);
+                if (p.length < 5) continue;
 
                 vehiculos.add(new Vehiculo(
                         p[0],
@@ -754,10 +854,16 @@ public class MainApp extends Application {
     }
 
     private void cargarRepuestos() {
+        repuestos.clear();
+
+        File f = new File(FICHERO_REPUESTOS);
+        if (!f.exists()) return;
+
         try (BufferedReader br = new BufferedReader(new FileReader(FICHERO_REPUESTOS))) {
             String linea;
             while ((linea = br.readLine()) != null) {
-                String[] p = linea.split(";");
+                String[] p = linea.split(";", -1);
+                if (p.length < 6) continue;
 
                 repuestos.add(new Repuesto(
                         p[0],
