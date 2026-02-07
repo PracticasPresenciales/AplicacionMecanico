@@ -179,12 +179,13 @@ public class MainApp extends Application {
         comboEntidad.getItems().addAll(
                 "Users",
                 "Customers",
-                "Vehicle",
+                "Vehicles",
                 "Replacements"
         );
         comboEntidad.setValue("Users");
 
         comboEntidad.setOnAction(e -> cargarFormulario(comboEntidad.getValue()));
+
 
         MenuBar menuBar = crearMenuBar();
 
@@ -216,7 +217,7 @@ public class MainApp extends Application {
 
         MenuItem usuariosItem = new MenuItem("Users");
         MenuItem clientesItem = new MenuItem("Customers");
-        MenuItem vehiculosItem = new MenuItem("Vehicles");
+        MenuItem vehiculosItem = new MenuItem("Vehicle");
         MenuItem repuestosItem = new MenuItem("Replacements");
 
         usuariosItem.setOnAction(e -> abrirTablaUsuarios());
@@ -408,9 +409,10 @@ public class MainApp extends Application {
             case "Users" -> formularioUsuarios();
             case "Customers" -> formularioClientes();
             case "Vehicles" -> formularioVehiculos();
-            case "Replacement Parts" -> formularioRepuestos();
+            case "Replacements" -> formularioRepuestos();
         }
     }
+
 
     // FORMULARIO USUARIOS
     private void formularioUsuarios() {
