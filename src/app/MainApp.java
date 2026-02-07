@@ -13,6 +13,8 @@ import model.Cliente;
 import model.Vehiculo;
 import model.Repuesto;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.PrintWriter;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -38,6 +40,12 @@ public class MainApp extends Application {
 
     @Override
     public void start(Stage stage) {
+
+        //CARGA DE DATOS
+        cargarUsuarios();
+        cargarClientes();
+        cargarVehiculos();
+        cargarRepuestos();
 
         ComboBox<String> comboEntidad = new ComboBox<>();
         comboEntidad.getItems().addAll(
@@ -407,6 +415,79 @@ public class MainApp extends Application {
             if (n instanceof TextArea) ((TextArea) n).clear();
         });
     }
+
+    //CARGADO DE DATOS
+    private void cargarUsuarios() {
+        try (BufferedReader br = new BufferedReader(new FileReader(FICHERO_USUARIOS))) {
+            String linea;
+            while ((linea = br.readLine()) != null) {
+                String[] p = linea.split(";");
+
+                usuarios.add(new Usuario(
+                        p[0],                    // nombre
+                        p[1],                    // contraseña
+                        p[2],                    // puesto
+                        LocalDate.parse(p[3]),   // fechaAlta
+                        p[4]                     // observaciones
+                ));
+            }
+        } catch (Exception ignored) {}
+    }
+
+    private void cargarClientes() {
+        try (BufferedReader br = new BufferedReader(new FileReader(FICHERO_CLIENTES))) {
+            String linea;
+            while ((linea = br.readLine()) != null) {
+                String[] p = linea.split(";");
+
+                clientes.add(new Cliente(
+                        Integer.parseInt(p[0]),
+                        p[1],
+                        p[2],
+                        p[3],
+                        LocalDate.parse(p[4]),
+                        Boolean.parseBoolean(p[5])
+                ));
+            }
+        } catch (Exception ignored) {}
+    }
+
+    private void cargarVehiculos() {
+        try (BufferedReader br = new BufferedReader(new FileReader(FICHERO_VEHICULOS))) {
+            String linea;
+            while ((linea = br.readLine()) != null) {
+                String[] p = linea.split(";");
+
+                vehiculos.add(new Vehiculo(
+                        p[0],
+                        p[1],
+                        p[2],
+                        LocalDate.parse(p[3]),
+                        p[4]
+                ));
+            }
+        } catch (Exception ignored) {}
+    }
+
+    private void cargarRepuestos() {
+        try (BufferedReader br = new BufferedReader(new FileReader(FICHERO_REPUESTOS))) {
+            String linea;
+            while ((linea = br.readLine()) != null) {
+                String[] p = linea.split(";");
+
+                repuestos.add(new Repuesto(
+                        p[0],
+                        p[1],
+                        LocalDate.parse(p[2]),
+                        Float.parseFloat(p[3]),
+                        Boolean.parseBoolean(p[4]),
+                        Integer.parseInt(p[5])
+                ));
+            }
+        } catch (Exception ignored) {}
+    }
+
+
 
     public static void main(String[] args) {
         launch();
