@@ -9,6 +9,11 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.scene.layout.HBox;
 
+import javafx.scene.control.TableView;
+import javafx.scene.control.TableColumn;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
+
 
 import model.Usuario;
 import model.Cliente;
@@ -178,6 +183,10 @@ public class MainApp extends Application {
         );
         comboEntidad.setValue("Usuarios");
 
+        comboEntidad.setOnAction(e -> cargarFormulario(comboEntidad.getValue()));
+
+        MenuBar menuBar = crearMenuBar(); // menú nuevo
+
         grid.setPadding(new Insets(10));
         grid.setHgap(10);
         grid.setVgap(10);
@@ -196,6 +205,104 @@ public class MainApp extends Application {
         stage.setResizable(true);
         stage.show();
     }
+
+    private MenuBar crearMenuBar() {
+
+        Menu menuTablas = new Menu("Ver tablas");
+
+        MenuItem usuariosItem = new MenuItem("Usuarios");
+        MenuItem clientesItem = new MenuItem("Clientes");
+        MenuItem vehiculosItem = new MenuItem("Vehículos");
+        MenuItem repuestosItem = new MenuItem("Repuestos");
+
+        usuariosItem.setOnAction(e -> abrirTablaUsuarios());
+        clientesItem.setOnAction(e -> abrirTablaClientes());
+        vehiculosItem.setOnAction(e -> abrirTablaVehiculos());
+        repuestosItem.setOnAction(e -> abrirTablaRepuestos());
+
+        menuTablas.getItems().addAll(
+                usuariosItem,
+                clientesItem,
+                vehiculosItem,
+                repuestosItem
+        );
+
+        return new MenuBar(menuTablas);
+    }
+
+    private void abrirTablaUsuarios() {
+        TableView<Usuario> tabla = new TableView<>();
+
+        TableColumn<Usuario,String> colNombre = new TableColumn<>("Nombre");
+        colNombre.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getNombre()));
+
+        TableColumn<Usuario,String> colPuesto = new TableColumn<>("Puesto");
+        colPuesto.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getPuesto()));
+
+        tabla.getColumns().addAll(colNombre,colPuesto);
+        tabla.setItems(FXCollections.observableArrayList(usuarios));
+
+        Stage ventana = new Stage();
+        ventana.setScene(new Scene(new VBox(tabla),400,300));
+        ventana.setTitle("Usuarios");
+        ventana.show();
+    }
+
+    private void abrirTablaClientes() {
+        TableView<Cliente> tabla = new TableView<>();
+
+        TableColumn<Cliente,String> colNombre = new TableColumn<>("Nombre");
+        colNombre.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getNombre()));
+
+        TableColumn<Cliente,String> colDni = new TableColumn<>("DNI");
+        colDni.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getDni()));
+
+        tabla.getColumns().addAll(colNombre,colDni);
+        tabla.setItems(FXCollections.observableArrayList(clientes));
+
+        Stage ventana = new Stage();
+        ventana.setScene(new Scene(new VBox(tabla),400,300));
+        ventana.setTitle("Clientes");
+        ventana.show();
+    }
+
+    private void abrirTablaVehiculos() {
+        TableView<Vehiculo> tabla = new TableView<>();
+
+        TableColumn<Vehiculo,String> colModelo = new TableColumn<>("Modelo");
+        colModelo.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getModelo()));
+
+        TableColumn<Vehiculo,String> colMatricula = new TableColumn<>("Matrícula");
+        colMatricula.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getMatricula()));
+
+        tabla.getColumns().addAll(colModelo,colMatricula);
+        tabla.setItems(FXCollections.observableArrayList(vehiculos));
+
+        Stage ventana = new Stage();
+        ventana.setScene(new Scene(new VBox(tabla),400,300));
+        ventana.setTitle("Vehículos");
+        ventana.show();
+    }
+
+
+    private void abrirTablaRepuestos() {
+        TableView<Repuesto> tabla = new TableView<>();
+
+        TableColumn<Repuesto,String> colRef = new TableColumn<>("Referencia");
+        colRef.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getReferencia()));
+
+        TableColumn<Repuesto,String> colModelo = new TableColumn<>("Modelo");
+        colModelo.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getModelo()));
+
+        tabla.getColumns().addAll(colRef,colModelo);
+        tabla.setItems(FXCollections.observableArrayList(repuestos));
+
+        Stage ventana = new Stage();
+        ventana.setScene(new Scene(new VBox(tabla),400,300));
+        ventana.setTitle("Repuestos");
+        ventana.show();
+    }
+
 
     // TODO CARGA FORMULARIO SEGÚN ENTIDAD
     private void cargarFormulario(String entidad) {
