@@ -49,7 +49,7 @@ public class Usuario {
     }
 
     public void setContraseña(String contraseña) {
-        this.puesto = contraseña;
+        this.contraseña = contraseña;
     }
 
     public void setPuesto(String puesto) {

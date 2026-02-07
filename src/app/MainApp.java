@@ -122,85 +122,67 @@ public class MainApp extends Application {
     }
 
     // FORMULARIO USUARIOS
-    private void formularioUsuarios() {
+        private void formularioUsuarios() {
 
-        Label lblNombre = new Label("Nombre");
-        Label lblContraseña = new Label("Contraseña");
-        Label lblPuesto = new Label("Puesto");
-        Label lblFecha = new Label("Fecha de alta");
-        Label lblObs = new Label("Observaciones");
+            Label lblNombre = new Label("Nombre");
+            Label lblContraseña = new Label("Contraseña");
+            Label lblPuesto = new Label("Puesto");
+            Label lblFecha = new Label("Fecha de alta");
+            Label lblObs = new Label("Observaciones");
 
-        lblNombre.setMinWidth(100);
-        lblContraseña.setMinWidth(100);
-        lblPuesto.setMinWidth(100);
-        lblFecha.setMinWidth(100);
-        lblObs.setMinWidth(100);
+            lblNombre.setMinWidth(100);
+            lblContraseña.setMinWidth(100);
+            lblPuesto.setMinWidth(100);
+            lblFecha.setMinWidth(100);
+            lblObs.setMinWidth(100);
 
-        txtNombreUsuario = new TextField();
-        txtContraseñaUsuario = new PasswordField();
-        txtPuestoUsuario = new TextField();
-        dpFechaAltaUsuario = new DatePicker();
-        txtObsUsuario = new TextArea();
-        txtObsUsuario.setPrefRowCount(4);
+            TextField txtNombre = new TextField();
+            PasswordField txtContraseña = new PasswordField();
+            TextField txtPuesto = new TextField();
+            DatePicker dpFechaAlta = new DatePicker();
+            TextArea txtObservaciones = new TextArea();
 
-        //BOTONES FORMULARIO
-        Button btnGuardar = new Button("Guardar");
-        btnGuardar.setMinWidth(100);
-        Button btnAnterior = new Button("Anterior");
-        btnGuardar.setMinWidth(100);
-        Button btnSiguiente = new Button("Siguiente");
-        btnGuardar.setMinWidth(100);
+            txtObservaciones.setPrefRowCount(4);
 
+            Button btnGuardar = new Button("Guardar");
+            btnGuardar.setMinWidth(100);
 
-        btnGuardar.setOnAction(e -> {
+            btnGuardar.setOnAction(e -> {
 
-            if (txtNombreUsuario.getText().isBlank()) {
-                mostrarError("Error", "El nombre es obligatorio");
-                return;
-            }
+                if (txtNombre.getText().isBlank()) {
+                    mostrarError("Error", "El nombre es obligatorio");
+                    return;
+                }
 
-            if (txtContraseñaUsuario.getText().isBlank()) {
-                mostrarError("Error", "La contraseña es obligatoria");
-                return;
-            }
+                if (txtContraseña.getText().isBlank()) {
+                    mostrarError("Error", "La contraseña es obligatoria");
+                    return;
+                }
 
-            if (dpFechaAltaUsuario.getValue() == null) {
-                mostrarError("Error", "Debes seleccionar una fecha");
-                return;
-            }
+                if (dpFechaAlta.getValue() == null) {
+                    mostrarError("Error", "Debes seleccionar una fecha");
+                    return;
+                }
 
-            Usuario u = new Usuario(
-                    txtNombreUsuario.getText(),
-                    txtContraseñaUsuario.getText(),
-                    txtPuestoUsuario.getText(),
-                    dpFechaAltaUsuario.getValue(),
-                    txtObsUsuario.getText()
-            );
+                Usuario u = new Usuario(
+                        txtNombre.getText(),
+                        txtContraseña.getText(),
+                        txtPuesto.getText(),
+                        dpFechaAlta.getValue(),
+                        txtObservaciones.getText()
+                );
 
-            usuarios.add(u);
-            guardarUsuarios();
-            limpiarFormulario();
-        });
-
-        btnAnterior.setOnAction(e -> {
-            if (indiceUsuario > 0) {
-                indiceUsuario--;
-                mostrarUsuario();
-            }
-        });
-
-        btnSiguiente.setOnAction(e -> {
-            if (indiceUsuario < usuarios.size() - 1) {
-                indiceUsuario++;
-                mostrarUsuario();
-            }
-        });
+                usuarios.add(u);
+                guardarUsuarios();
+                limpiarFormulario();
+            });
 
         grid.add(lblNombre, 0, 0);
         grid.add(txtNombreUsuario, 1, 0);
 
-        grid.add(lblContraseña, 0, 1);
-        grid.add(txtContraseñaUsuario, 1, 1);
+
+            grid.add(lblNombre, 0, 0);
+            grid.add(txtNombre, 1, 0);
 
         grid.add(lblPuesto, 0, 2);
         grid.add(txtPuestoUsuario, 1, 2);
@@ -242,19 +224,68 @@ public class MainApp extends Application {
 
 
     // FORMULARIO CLIENTES
-    private void formularioClientes() {
+        private void formularioClientes() {
 
-        Label lblNombre = new Label("Nombre");
-        Label lblApellidos = new Label("Apellidos");
-        Label lblDni = new Label("DNI");
-        Label lblFecha = new Label("Fecha última visita");
-        Label lblTipo = new Label("Tipo");
+            Label lblNombre = new Label("Nombre");
+            Label lblApellidos = new Label("Apellidos");
+            Label lblDni = new Label("DNI");
+            Label lblFecha = new Label("Fecha última visita");
+            Label lblTipo = new Label("Tipo");
 
-        lblNombre.setMinWidth(140);
-        lblApellidos.setMinWidth(140);
-        lblDni.setMinWidth(140);
-        lblFecha.setMinWidth(140);
-        lblTipo.setMinWidth(140);
+            lblNombre.setMinWidth(140);
+            lblApellidos.setMinWidth(140);
+            lblDni.setMinWidth(140);
+            lblFecha.setMinWidth(140);
+            lblTipo.setMinWidth(140);
+
+            TextField txtNombre = new TextField();
+            TextField txtApellidos = new TextField();
+            TextField txtDni = new TextField();
+            DatePicker dpUltimaVisita = new DatePicker();
+            CheckBox chkTipo = new CheckBox("Tipo");
+
+            txtNombre.setPrefWidth(250);
+            txtApellidos.setPrefWidth(250);
+            txtDni.setPrefWidth(250);
+            dpUltimaVisita.setPrefWidth(250);
+
+            Button btnGuardar = new Button("Guardar");
+            btnGuardar.setMinWidth(100);
+
+            btnGuardar.setOnAction(e -> {
+
+                if (txtNombre.getText().isBlank()) {
+                    mostrarError("Error", "El nombre es obligatorio");
+                    return;
+                }
+
+                if (txtDni.getText().isBlank()) {
+                    mostrarError("Error", "El DNI es obligatorio");
+                    return;
+                }
+
+                if (dpUltimaVisita.getValue() == null) {
+                    mostrarError("Error", "Debes indicar la última visita");
+                    return;
+                }
+
+                Cliente c = new Cliente(
+                        0,
+                        txtNombre.getText(),
+                        txtApellidos.getText(),
+                        txtDni.getText(),
+                        dpUltimaVisita.getValue(),
+                        chkTipo.isSelected()
+                );
+
+                clientes.add(c);
+                guardarClientes();
+                limpiarFormulario();
+            });
+
+
+            grid.add(lblNombre, 0, 0);
+            grid.add(txtNombre, 1, 0);
 
         txtNombreCliente = new TextField();
         txtApellidosCliente = new TextField();
@@ -399,46 +430,32 @@ public class MainApp extends Application {
 
         btnGuardar.setOnAction(e -> {
 
-            if (txtModeloVehiculo.getText().isBlank()) {
+            if (txtModelo.getText().isBlank()) {
                 mostrarError("Error", "El modelo es obligatorio");
                 return;
             }
 
-            if (txtMatriculaVehiculo.getText().isBlank()) {
+            if (txtMatricula.getText().isBlank()) {
                 mostrarError("Error", "La matrícula es obligatoria");
                 return;
             }
 
-            if (dpFechaLlegadaVehiculo.getValue() == null) {
+            if (dpFechaLlegada.getValue() == null) {
                 mostrarError("Error", "Debes indicar la fecha de llegada");
                 return;
             }
 
             Vehiculo v = new Vehiculo(
-                    txtModeloVehiculo.getText(),
-                    txtMatriculaVehiculo.getText(),
-                    txtTelefonoVehiculo.getText(),
-                    dpFechaLlegadaVehiculo.getValue(),
-                    txtAveriaVehiculo.getText()
+                    txtModelo.getText(),
+                    txtMatricula.getText(),
+                    txtTelefono.getText(),
+                    dpFechaLlegada.getValue(),
+                    txtAveria.getText()
             );
 
             vehiculos.add(v);
             guardarVehiculos();
             limpiarFormulario();
-        });
-
-        btnAnterior.setOnAction(e -> {
-            if (indiceVehiculo > 0) {
-                indiceVehiculo--;
-                mostrarVehiculo();
-            }
-        });
-
-        btnSiguiente.setOnAction(e -> {
-            if (indiceVehiculo < vehiculos.size() - 1) {
-                indiceVehiculo++;
-                mostrarVehiculo();
-            }
         });
 
 
@@ -511,11 +528,11 @@ public class MainApp extends Application {
         txtGarantiaRepuesto = new TextField();
         chkRecibidoRepuesto = new CheckBox("Recibido");
 
-        txtReferenciaRepuesto.setPrefWidth(250);
-        txtModeloRepuesto.setPrefWidth(250);
-        dpFechaPedidoRepuesto.setPrefWidth(250);
-        txtPrecioRepuesto.setPrefWidth(250);
-        txtGarantiaRepuesto.setPrefWidth(250);
+        txtReferencia.setPrefWidth(250);
+        txtModelo.setPrefWidth(250);
+        dpFechaPedido.setPrefWidth(250);
+        txtPrecio.setPrefWidth(250);
+        txtGarantia.setPrefWidth(250);
 
         Button btnGuardar = new Button("Guardar");
         btnGuardar.setMinWidth(100);
@@ -526,12 +543,12 @@ public class MainApp extends Application {
 
         btnGuardar.setOnAction(e -> {
 
-            if (txtReferenciaRepuesto.getText().isBlank()) {
+            if (txtReferencia.getText().isBlank()) {
                 mostrarError("Error", "La referencia es obligatoria");
                 return;
             }
 
-            if (dpFechaPedidoRepuesto.getValue() == null) {
+            if (dpFechaPedido.getValue() == null) {
                 mostrarError("Error", "Debes indicar la fecha del pedido");
                 return;
             }
@@ -540,19 +557,19 @@ public class MainApp extends Application {
             int garantia;
 
             try {
-                precio = Float.parseFloat(txtPrecioRepuesto.getText());
-                garantia = Integer.parseInt(txtGarantiaRepuesto.getText());
+                precio = Float.parseFloat(txtPrecio.getText());
+                garantia = Integer.parseInt(txtGarantia.getText());
             } catch (Exception ex) {
                 mostrarError("Error", "Precio y garantía deben ser números");
                 return;
             }
 
             Repuesto r = new Repuesto(
-                    txtReferenciaRepuesto.getText(),
-                    txtModeloRepuesto.getText(),
-                    dpFechaPedidoRepuesto.getValue(),
+                    txtReferencia.getText(),
+                    txtModelo.getText(),
+                    dpFechaPedido.getValue(),
                     precio,
-                    chkRecibidoRepuesto.isSelected(),
+                    chkRecibido.isSelected(),
                     garantia
             );
 
@@ -567,14 +584,6 @@ public class MainApp extends Application {
                 mostrarRepuesto();
             }
         });
-
-        btnSiguiente.setOnAction(e -> {
-            if (indiceRepuesto < repuestos.size() - 1) {
-                indiceRepuesto++;
-                mostrarRepuesto();
-            }
-        });
-
 
 
         grid.add(lblReferencia, 0, 0);
@@ -637,7 +646,7 @@ public class MainApp extends Application {
     }
 
 
-    //TODO MOSTRAR ALERTAS
+    //MOSTRAR ALERTAS
     private void mostrarError(String titulo, String mensaje) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(titulo);
@@ -646,59 +655,6 @@ public class MainApp extends Application {
         alert.showAndWait();
     }
 
-    //MUESTRA DE DATOS
-    private void mostrarUsuario() {
-
-        if (indiceUsuario < 0 || indiceUsuario >= usuarios.size()) return;
-
-        Usuario u = usuarios.get(indiceUsuario);
-
-        txtNombreUsuario.setText(u.getNombre());
-        txtContraseñaUsuario.setText(u.getContraseña());
-        txtPuestoUsuario.setText(u.getPuesto());
-        dpFechaAltaUsuario.setValue(u.getFechaAlta());
-        txtObsUsuario.setText(u.getObservaciones());
-    }
-
-    private void mostrarCliente() {
-
-        if (indiceCliente < 0 || indiceCliente >= clientes.size()) return;
-
-        Cliente c = clientes.get(indiceCliente);
-
-        txtNombreCliente.setText(c.getNombre());
-        txtApellidosCliente.setText(c.getApellidos());
-        txtDniCliente.setText(c.getDni());
-        dpUltimaVisitaCliente.setValue(c.getFechaUltimaVisita());
-        chkTipoCliente.setSelected(c.isTipo());
-    }
-
-    private void mostrarVehiculo() {
-
-        if (indiceVehiculo < 0 || indiceVehiculo >= vehiculos.size()) return;
-
-        Vehiculo v = vehiculos.get(indiceVehiculo);
-
-        txtModeloVehiculo.setText(v.getModelo());
-        txtMatriculaVehiculo.setText(v.getMatricula());
-        txtTelefonoVehiculo.setText(v.getTelefonoDueno());
-        dpFechaLlegadaVehiculo.setValue(v.getFechaLlegada());
-        txtAveriaVehiculo.setText(v.getAveria());
-    }
-
-    private void mostrarRepuesto() {
-
-        if (indiceRepuesto < 0 || indiceRepuesto >= repuestos.size()) return;
-
-        Repuesto r = repuestos.get(indiceRepuesto);
-
-        txtReferenciaRepuesto.setText(r.getReferencia());
-        txtModeloRepuesto.setText(r.getModelo());
-        dpFechaPedidoRepuesto.setValue(r.getFechaPedido());
-        txtPrecioRepuesto.setText(String.valueOf(r.getPrecio()));
-        txtGarantiaRepuesto.setText(String.valueOf(r.getGarantiaMeses()));
-        chkRecibidoRepuesto.setSelected(r.isRecibido());
-    }
 
     //CARGADO DE DATOS
     private void cargarUsuarios() {
