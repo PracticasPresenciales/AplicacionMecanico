@@ -526,40 +526,40 @@ public class MainApp extends Application {
 
         btnGuardar.setOnAction(e -> {
 
-            if (txtReferenciaRepuesto.getText().isBlank()) {
-                mostrarError("Error", "La referencia es obligatoria");
-                return;
-            }
+                    if (txtReferenciaRepuesto.getText().isBlank()) {
+                        mostrarError("Error", "La referencia es obligatoria");
+                        return;
+                    }
 
-            if (dpFechaPedidoRepuesto.getValue() == null) {
-                mostrarError("Error", "Debes indicar la fecha del pedido");
-                return;
-            }
+                    if (dpFechaPedidoRepuesto.getValue() == null) {
+                        mostrarError("Error", "Debes indicar la fecha del pedido");
+                        return;
+                    }
 
-            float precio;
-            int garantia;
+                    float precio;
+                    int garantia;
 
-            try {
-                precio = Float.parseFloat(txtPrecioRepuesto.getText());
-                garantia = Integer.parseInt(txtGarantiaRepuesto.getText());
-            } catch (Exception ex) {
-                mostrarError("Error", "Precio y garantía deben ser números");
-                return;
-            }
+                    try {
+                        precio = Float.parseFloat(txtPrecioRepuesto.getText());
+                        garantia = Integer.parseInt(txtGarantiaRepuesto.getText());
+                    } catch (Exception ex) {
+                        mostrarError("Error", "Precio y garantía deben ser números");
+                        return;
+                    }
 
-            Repuesto r = new Repuesto(
-                    txtReferenciaRepuesto.getText(),
-                    txtModeloRepuesto.getText(),
-                    dpFechaPedidoRepuesto.getValue(),
-                    precio,
-                    chkRecibidoRepuesto.isSelected(),
-                    garantia
-            );
+                    Repuesto r = new Repuesto(
+                            txtReferenciaRepuesto.getText(),
+                            txtModeloRepuesto.getText(),
+                            dpFechaPedidoRepuesto.getValue(),
+                            precio,
+                            chkRecibidoRepuesto.isSelected(),
+                            garantia
+                    );
 
-            repuestos.add(r);
-            guardarRepuestos();
-            limpiarFormulario();
-        }
+                    repuestos.add(r);
+                    guardarRepuestos();
+                    limpiarFormulario();
+                }
         );
         btnAnterior.setOnAction(e -> {
             if (indiceRepuesto > 0) {
