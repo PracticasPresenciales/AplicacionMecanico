@@ -68,6 +68,7 @@ public class Repuesto {
     public void setRecibido(boolean recibido) {
         this.recibido = recibido;
     }
+
     public void setGarantiaMeses(int garantiaMeses) {
         this.garantiaMeses = garantiaMeses;
     }

@@ -29,7 +29,7 @@ public class Vehiculo {
     }
 
     public String getTelefonoDueno() {
-        return modelo;
+        return telefonoDueno;
     }
 
     public LocalDate getFechaLlegada() {
